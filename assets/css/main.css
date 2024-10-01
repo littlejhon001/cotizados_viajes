@@ -1,0 +1,28 @@
+.form-control {
+  padding: 10px!important;
+}
+
+.bg-negro-ppal{
+  background-color: #212020 !important;
+}
+.bg-negro-secundario{
+  background-color: #1e1e1e;
+}
+.bg-negro-tercero{
+  background-color: #5b5b5b!important;
+}
+.btn-add-event{
+  background-color: #ba1979;
+  padding: 5px 20px;
+  border:none;
+  color:white;
+  border-radius: 5px;
+}
+
+.card_eventos{
+  overflow-x: auto;
+}
+
+.form-control {
+  color: white!important;
+}
