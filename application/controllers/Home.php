@@ -81,7 +81,7 @@ class Home extends CI_Controller
         );
 
         // Cargar la librería php_mailer y enviar el correo
-        $this->load->library('php_mailer');
+        $this->load->library('php_mailer', null, 'php_mailer');
         $respuesta = $this->php_mailer->enviarcorreo($correo);
 
         // Verificar si el correo fue enviado exitosamente
