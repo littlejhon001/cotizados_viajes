@@ -1,5 +1,3 @@
-<link rel='stylesheet' href='<?php echo IP_SERVER ?>assets/css/reloj.css?>'>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 
@@ -86,187 +84,325 @@
     /* ? ----- MAIN ----- */
 </style>
 
-<button id="btnAudio" onclick="toggleAudio()">
-    <ion-icon id="sonido" class="sonido btnaudio" name="volume-high-outline"></ion-icon>
-    <ion-icon id="muted" class="btnaudio" name="volume-mute-outline"></ion-icon>
-</button>
-<div id="anuncio" class="anuncio">
-    Para una mejor experiencia, activa el audio.
+
+<div class="text-video">
+    <h2 class="text-center text-white">
+        Realiza la cotización de tu trayecto ideal, selecciona el trayecto, el vehículo y el día.
+    </h2>
+    <div class="d-flex justify-content-center">
+        <a class="btn button-cotizar text-center" href="#cotizacion">Cotiza ahora</a>
+    </div>
 </div>
 
-
-
-<div class="container-fluid seccion1 m-0 p-0">
+<div class="container-fluid  m-0 p-0">
 
     <div class="col-lg-12 col-md-12 col-sm-12 m-0 p-0 ">
-        <video id="miVideo" class="miVideo" src="<?php echo IP_SERVER ?>assets/img/video_spot.mp4" autoplay loop
-            muted></video>
+        <video id="miVideo" class="miVideo" src="<?php echo IP_SERVER ?>assets/img/vide_travel_spot.mp4" autoplay loop
+            muted>
+        </video>
     </div>
-    <!-- sponsors -->
-    <div class="col-lg-12 col-md-12 col-sm-12 p- bg-white text-center">
-        <div class="carrousel-57">
-            <div class="slider">
-                <div class="slide-track">
-                    <?php foreach ($eventos as $evento) { ?>
-                        <div class="slide">
-                            <img src="<?php echo $evento->imagen ?>" height="100" alt="">
-                        </div>
-                        <?php
-                    } ?>
+    <div class="container-fluid p-5  img-fondo bg-glass p-4" id="cotizacion">
+        <div class="container bg-glass p-4">
+            <div class="row   rounded-2 py-4 ">
+                <h2 class="fs-1 color-text">
+                    Tenemos el viaje ideal para ti
+                </h2>
+                <div class="col-md-6  ">
+                    <label for="trayecto" class="form-label text-white">Destino</label>
+                    <select class="form-select" id="trayecto" name="trayecto">
+                        <option selected>Seleccione un trayecto</option>
+                        <?php foreach ($tarifas as $trayecto) { ?>
+                            <option value="<?php echo $trayecto->id; ?>">
+                                <?php echo $trayecto->destino . ' ' . $trayecto->vehiculo; ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="col-md-6  ">
+                    <label for="dia" class="form-label text-white">Día</label>
+                    <select class="form-select" id="dia" name="dia">
+                        <option value="">Seleccione un día</option>
+                        <option value="1">1 Día</option>
+                        <option value="2">2 Días</option>
+                        <option value="3">3 Días</option>
+                    </select>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="separador-57"></div>
+            <div class="container pb-4 ">
 
-    <div class="bg-secundario">
-        <!-- para para-reflexionar -->
-        <div class="section-1 py-5 " id="parareflexionar">
-            <div class="row d-flex justify-content-center align-items-center">
-
-                <div class=" col-12 col-md-12 col-lg-5  text-center  " data-aos="fade-right">
-                    <div data-aos="fade-right">
-                        <img src="<?php echo IP_SERVER ?>assets/imagenes/elementos/para-reflexionar.png"
-                            class="my-3 mb-3 img-titulos" width="" alt="">
-                    </div>
-
-                    <h3 class="text-light fw-light mt-3 text-start  ">
-                        "En Event_On, vive la experiencia del festival VibeFest. Encuentra en tiempo real los escenarios
-                        y artistas que se están presentando, consulta los horarios y localiza cada espectáculo. No te
-                        pierdas ningún momento de este increíble festival con nuestra guía interactiva, que te ayudará a
-                        moverte y disfrutar al máximo de VibeFest. ¡Tu experiencia perfecta está a un clic de
-                        distancia!"
-                        </>
-
-
-                </div>
-                <div class="col-12  col-md-12  col-lg-5 h-100 d-flex justify-content-center" data-aos="zoom-in"
-                    data-aos-duration="3000">
-                    <img class="floating-image img-cube mt-5"
-                        src="<?php echo IP_SERVER ?>assets/img/L4GXT3DF8D_800850084987979.jpg" width="" alt="">
-                </div>
-
-            </div>
-        </div>
-        <!-- programate -->
-        <div class="section-2 py-3" id="programate">
-            <div class="text-center mt-3">
-                <img src="<?php echo IP_SERVER ?>assets/img/programate.png" alt="">
-            </div>
-            <div class="container pt-4">
-                <div class="text-center">
-                    <h4 class=" fw-light ">
-                        Conoce a los Artistas en Escena: No te Pierdas Ninguna Presentación, Descubre sus Trayectorias,
-                        Explora sus Estilos y Vive de Cerca el Talento que Hace Únicos a Cada Show. Sumérgete en la
-                        Magia de sus Actuaciones y Aprovecha al Máximo Cada Momento del Festival.
-                    </h4>
-                </div>
-                <div class="mt-5">
-                    <div class="row d-flex ">
-                        <?php foreach ($eventos as $row) { ?>
-                            <div class="col-6  d-flex justify-content-center">
-                                <div class="card mb-3" style="max-width: 540px;">
-                                    <div class="row g-0">
-                                        <div class="col-md-4 d-flex align-items-center">
-                                            <img src="<?php echo $row->imagen ?>" class="img-fluid rounded-start" alt="...">
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title"><?php echo $row->nombre . '-' . $row->artista ?></h5>
-                                                <p class="card-text">
-                                                    Descripción:
-                                                    <?php echo $row->descripcion ?>
-                                                    personas
-                                                </p>
-                                                <p class="card-text">
-                                                    <i class="bi bi-geo-fill"></i>
-                                                    Ubicación:
-                                                    <?php echo $row->ubicacion ?>
-                                                </p>
-                                                <p class="card-text">
-                                                    <i class="bi bi-person-arms-up"></i>
-                                                    Capacidad:
-                                                    <?php echo $row->capacidad ?>
-                                                    personas
-                                                </p>
-                                                <p class="card-text">
-                                                <i class="bi bi-map-fill"></i>
-                                                    <?php echo $row->escenario ?>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="row">
+                    <div class="col-6">
+                        <h2 class="text-white">
+                            La tarifa para el trayecto seleccionado es:
+                        </h2>
+                        <div class="card border-0 bg-white mt-3" style="width:auto;">
+                            <div class="card-header border-0">
+                                <div class="d-flex">
+                                    <i class="bi bi-geo-alt fs-5 text-danger mx-2"></i>
+                                    <h4 class="color-text" id="destino">Destino o trayecto:</h4>
                                 </div>
                             </div>
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <i class="bi bi-car-front-fill me-2 fs-5"></i>
+                                    <h4 class="color-text" id="vehiculo">Vehículo: Selecciona</h4>
+                                </div>
+                                <div class="d-flex">
+                                    <i class="bi bi-cash fs-5 me-2"></i>
+                                    <h4 class="color-text" id="precio">Precio:0$ </h4>
+                                </div>
+                            </div>
+                            <div class="card-footer border-0 d-flex justify-content-end">
+                                <button
+                                    class="btn btn-primary d-none animate__animated animate__fadeInLeft "
+                                    id="enviar_correo1">
+                                    Enviar esta cotización a mi
+                                    correo
+                                    <i class="bi bi-envelope"></i>
+                                </button>
+                                <a href="https://wa.link/9bwsji" target="_blank" class="ms-3 btn btn-success">Contactar
+                                    con un agente
+                                    <i class="bi bi-whatsapp"></i></a>
 
-                        <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="  box-form  animate__animated animate__fadeInRight" id="formulario"
+                            style="display:none;">
+                            <h2 class="color-text">
+                                Recibirás la cotización formal en tu correo electrónico para imprimir.
+                            </h2>
+                            <form id="formCotizacion">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="apellidos" class="form-label">Apellidos</label>
+                                    <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="correo" class="form-label">Correo</label>
+                                    <input type="email" class="form-control" id="correo" name="correo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input class="form-check-input" type="checkbox" id="politicas" name="politicas"
+                                        required>
+                                    <label class="form-check-label" for="politicas">
+                                        Acepto políticas de privacidad <a href="http://">Política de privacidad</a>
+                                    </label>
+                                </div>
+                                <button class="btn btn-primary enviar_cotizacion">Enviar cotización</button>
+                                <button target="_blank" class="ms-3 btn  btn-outline-danger">
+                                    imprimir
+                                    <i class="bi bi-printer"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
+    </div>
 
-
-        <!-- imagen agenda -->
-
-        <!-- chat  -->
-        <!-- <div class="container-fluid p-0 m-0 ">
-                    <df-messenger location="us-central1" project-id="consejo-colombiano-seguridad"
-                        agent-id="8f5dbdf4-93ca-4e9b-b5a8-412fbe94d5c4" language-code="es" max-query-length="-1">
-                        <df-messenger-chat-bubble chat-title="Asistente Viwi">
-                        </df-messenger-chat-bubble>
-                    </df-messenger>
-                    </div> -->
-        <div id="install-banner" class="animate__animated animate__fadeInLeft text-center">
-            <span>Instala nuestra aplicación para una mejor experiencia.</span>
-            <div>
-                <button onclick="installPWA()">Instalar</button>
-                <button class="bg-danger" onclick="cerrar()">No gracias</button>
-            </div>
+    <div id="install-banner" class="animate__animated animate__fadeInLeft text-center">
+        <span>Instala nuestra aplicación para una mejor experiencia.</span>
+        <div>
+            <button onclick="installPWA()">Instalar</button>
+            <button class="bg-danger" onclick="cerrar()">No gracias</button>
         </div>
+    </div>
 
-        <div class="btn-whatsapp animate__animated animate__fadeInUp ">
-            <a href="" target="_blank">
-                <lord-icon src="https://cdn.lordicon.com/fjuachvi.json" trigger="hover" style="width:40px;height:40px">
-                </lord-icon>
-                <span class="tooltip">Contáctame</span>
-            </a>
-        </div>
+    <div class="btn-whatsapp animate__animated animate__fadeInUp ">
+        <a href="#" target="_blank">
+            <lord-icon src="https://cdn.lordicon.com/fjuachvi.json" trigger="hover" style="width:40px;height:40px">
+            </lord-icon>
+            <span class="tooltip">Contáctame</span>
+        </a>
+    </div>
+
+    <script>
+        $('.enviar_cotizacion').on('click', function (e) {
+            // Evita que el formulario se envíe normalmente
+            e.preventDefault();
+            const url = '<?php echo IP_SERVER; ?>';
+            const nombre = $('#nombre').val();
+            const apellidos = $('#apellidos').val();
+            const telefono = $('#telefono').val();
+            const correo = $('#correo').val();
+            const precio = $('#precio').text();
+            const trayecto = $('#destino').text();
+            const vehiculo = $('#vehiculo').text();
+            const dia = $('#dia').val();
+
+            // Mostrar el loader
+            Swal.fire({
+                title: 'Enviando...',
+                text: 'Por favor espera mientras enviamos tu cotización.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            $.ajax({
+                url: url + 'home/enviar_cotizacion',
+                type: 'POST',
+                data: {
+                    nombre: nombre,
+                    apellidos: apellidos,
+                    telefono: telefono,
+                    correo: correo,
+                    precio: precio,
+                    trayecto: trayecto,
+                    vehiculo: vehiculo,
+                    dia: dia
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.message,
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Hubo un problema al enviar el correo.',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            });
+        });
+
+
+    </script>
+
+
+    <script>
+        // Obtén los datos desde PHP en formato JSON
+        var tarifas = <?php echo json_encode($tarifas); ?>;
+
+        // Selecciona los elementos del DOM
+        var selectTrayecto = document.getElementById('trayecto');
+        var selectDia = document.getElementById('dia');
+        var precio = document.getElementById('precio');
+        var destino = document.getElementById('destino');
+        var vehiculo = document.getElementById('vehiculo'); // Nuevo elemento para el vehículo
+        var enviarCorreo = document.getElementById('enviar_correo1');
+
+        // Función para formatear el precio en pesos colombianos
+        function formatearPrecio(precio) {
+            return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(precio);
+        }
+
+        // Escuchar cambios en el select de trayecto
+        selectTrayecto.addEventListener('change', function () {
+            var trayectoSeleccionado = tarifas.find(function (trayecto) {
+                return trayecto.id == selectTrayecto.value;
+            });
+
+            // Resetear el select de días, el precio, el destino y el vehículo al cambiar de trayecto
+            selectDia.value = '';
+            precio.innerText = 'Precio: ';
+            destino.innerText = 'Destino o trayecto: ';
+            vehiculo.innerText = 'Vehículo: '; // Resetear el vehículo
+        });
+
+        // Escuchar cambios en el select de días
+        selectDia.addEventListener('change', function () {
+            var trayectoSeleccionado = tarifas.find(function (trayecto) {
+                return trayecto.id == selectTrayecto.value;
+            });
+
+            if (trayectoSeleccionado) {
+                var precioDia;
+                switch (selectDia.value) {
+                    case '1':
+                        precioDia = trayectoSeleccionado.dia1;
+                        break;
+                    case '2':
+                        precioDia = trayectoSeleccionado.dia2;
+                        break;
+                    case '3':
+                        precioDia = trayectoSeleccionado.dia3;
+                        break;
+                    default:
+                        precioDia = null;
+                }
+
+                if (precioDia) {
+                    precio.innerText = 'Precio: ' + formatearPrecio(precioDia);
+                    destino.innerText = 'Destino o trayecto: ' + trayectoSeleccionado.destino;
+                    vehiculo.innerText = 'Vehículo: ' + trayectoSeleccionado.vehiculo; // Mostrar el vehículo
+                    enviarCorreo.classList.remove('d-none');
+                } else {
+                    Swal.fire({
+                        title: "Tarifa no disponible",
+                        icon: "error",
+                        html: `
+                                    <p>Comunícate con nosotros para recibir mas información</p>
+                                    <a href="https://wa.link/9bwsji" target="_blank"style="display: inline-flex; align-items: center; padding: 10px 20px; background-color: #25D366; color: white; text-decoration: none; border-radius: 5px;">
+                                    Ir a WhatsApp
+                                    <i class="ms-2 bi bi-whatsapp"></i>
+                                    </a>
+                                `,
+                        showConfirmButton: false
+                    });
+                    precio.innerText = 'Precio: ';
+                    destino.innerText = 'Destino o trayecto: ';
+                    vehiculo.innerText = 'Vehículo: '; // Resetear el vehículo
+                }
+            }
+        });
+
+        var mostrar_fomulario = document.getElementById('enviar_correo1');
+
+        mostrar_fomulario.addEventListener('click', function () {
+
+            var formulario = document.getElementById('formulario');
+            formulario.style.display = 'block';
+
+        });
+
+    </script>
+
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
 
 
-        <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- michal snick js  -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- slick_jquery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+    <!-- slick_js -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 
+    <!-- link js bostrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
 
-
-        <!-- michal snick js  -->
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-        <!-- slick_jquery -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-
-        <!-- slick_js -->
-        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
-
-        <!-- link js bostrap -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-            crossorigin="anonymous"></script>
-
-        <script>
-            AOS.init();
-        </script>
-
-        <!-- js main -->
-
-        <!-- partial:index.partial.html -->
-
-        <!-- service worker -->
-
-
-
-        <script src="<?php echo IP_SERVER ?>assets/js/scripts/main.js"></script>
-        <script src="<?php echo IP_SERVER ?>assets/js/simplyCountdown.min.js"></script>
-        <script src="<?php echo IP_SERVER ?>assets/js/countdown.js"></script>
+    <script>
+        AOS.init();
+    </script>

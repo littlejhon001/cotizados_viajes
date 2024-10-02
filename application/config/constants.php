@@ -35,7 +35,7 @@ if ($enviroment == "DEVELOPMENT") {
 	define('HOSTNAME', 'localhost');
 	define('USERNAME', 'root');
 	define('PASSWORD', '');
-	define('DATABASE', 'event_on');
+	define('DATABASE', 'calculador_viajes');
 } else if ($enviroment == "PRODUCTION") {
 
 	define('IP_SERVER', ''); //Ip o ruta produccion

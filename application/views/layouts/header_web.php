@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Evento On</title>
+    <title>Cotizador - Transdorado</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="cache-control" content="max-age=0" />
@@ -194,22 +194,22 @@
     <!-- <link rel="stylesheet" href="<?php echo IP_SERVER ?>assets/css/agenda.css" type="text/css"> -->
     <!-- <link rel="stylesheet" href="<?php echo IP_SERVER ?>assets/css/agenda1.css" type="text/css"> -->
 
-    <link rel="manifest" href="<?php echo IP_SERVER; ?>assets/manifest.json">
+    <!-- <link rel="manifest" href="<?php//  echo IP_SERVER; ?>assets/manifest.json"> -->
+<!--
 
+    <link rel="manifest" href="<?php// echo IP_SERVER; ?>manifest"> -->
 
-    <link rel="manifest" href="<?php echo IP_SERVER; ?>manifest">
-
-    <script>
+    <!-- <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
-                navigator.serviceWorker.register('<?php echo IP_SERVER . 'assets/service-worker.js'; ?>').then(function (registration) {
+                navigator.serviceWorker.register('<?php // echo IP_SERVER . 'assets/service-worker.js'; ?>').then(function (registration) {
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
                 }, function (err) {
                     console.log('ServiceWorker registration failed: ', err);
                 });
             });
         }
-    </script>
+    </script> -->
     <!-- <script>
         var timestamp = new Date().getTime();
         var stylesheetUrl = "css/style.css?v=" + timestamp;
@@ -223,8 +223,9 @@
 <header id="inicio">
     <nav class="navbar navbar-expand-lg" id="miNavBar" data-aos="fade-down" data-aos-duration="1500">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.html" id="logo">
-                <img src="<?php echo IP_SERVER ?>assets/img/event_on.png" alt="">
+            <a class="navbar-brand " href="index.html" id="logo">
+                <img src="<?php echo IP_SERVER ?>assets/img/logo_transdorado.png" class="logo-ppal" width=""
+                    alt="main_logo">
             </a>
             <button onclick="boton()" id="navbarButton" class="navbar-toggler  navIcono" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -234,16 +235,11 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo IP_SERVER ?>">Inicio</a>
+                        <a class="nav-link" target="_blank" href="https://www.transdorado.co/">Inicio</a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#parareflexionar">Artistas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#programate">Agenda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#programate">Contacto</a>
+                        <a class="nav-link" href="#">Contacto</a>
                     </li>
                 </ul>
             </div>

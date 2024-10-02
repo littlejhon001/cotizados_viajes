@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
 
 
 
@@ -8,7 +9,7 @@
     --letra2: 'Roboto', sans-serif;
     --color-blanco: #ffff;
     --letras: 'Dosis', sans-serif;
-    --letra: 'Roboto Condensed', sans-serif;
+    --letra: "Afacad Flux", sans-serif;
 }
 
 
@@ -23,10 +24,10 @@ a {
 }
 
 body {
-
+    font-family: var(--letra);
     overflow-x: hidden !important;
+    /* background-color: #a6c8db; */
     /* max-width: 2200px; */
-
 }
 
 #profile-tab-pane {
@@ -269,9 +270,7 @@ body::-webkit-scrollbar-thumb {
 /* Seccion1 */
 
 .seccion1 {
-background: rgb(0,17,25);
-background: linear-gradient(0deg, rgba(0,17,25,1) 0%, rgba(0,237,249,1) 100%);
-
+    background-color: whitesmoke;
 }
 
 .border-57::before,
@@ -448,13 +447,13 @@ background: linear-gradient(0deg, rgba(0,17,25,1) 0%, rgba(0,237,249,1) 100%);
 
 .separador-57 {
 
-width: 90%;
+    width: 90%;
 
-height: 6px;
+    height: 6px;
 
-background: linear-gradient(153deg, rgba(172, 222, 33, 1) 0%, rgba(41, 210, 227, 1) 100%);
+    background: linear-gradient(153deg, rgba(172, 222, 33, 1) 0%, rgba(41, 210, 227, 1) 100%);
 
-margin: auto;
+    margin: auto;
 }
 
 .separated-table th,
@@ -748,14 +747,15 @@ margin: auto;
     /* Desplazamiento hacia arriba */
 }
 
-.img-movil-sotre{
+.img-movil-sotre {
     /* object-fit: contain; */
     width: 100%;
 }
 
-.modal{
-    z-index: 999999!important;
+.modal {
+    z-index: 999999 !important;
 }
+
 /* codigo de jhon aqui para abajo es codigo del congreso 56 y lo hizo David  ------------------------------------------------------------------------------------------------------------------------- */
 
 .seccion1 .row {
@@ -907,7 +907,7 @@ margin: auto;
     background: linear-gradient(90deg, #e22567, #5a0779);
     border: 2px solid #ff85b7;
     font-size: 1.3rem;
-    padding: 15px 20px;
+
 }
 
 /* seccion4 */
@@ -2063,7 +2063,7 @@ footer .footer .row {
 
     /* imagen logo  */
     .navbar-brand img {
-        width: 60px;
+        width: 100px;
     }
 
     /* seccion2 */
@@ -3119,7 +3119,7 @@ footer .footer .row {
     }
 
     .frase-movil {
-        margin-top: 50px!important;
+        margin-top: 50px !important;
         width: 100%;
     }
 
@@ -4483,4 +4483,57 @@ footer .footer .row {
     font-size: 25px;
     color: #fff;
 
+}
+
+.text-video {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+.button-cotizar {background-color: #f49406;color: white;border: none;border-radius: 5px;padding: 10px 45px;}
+
+.button-cotizar a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.button-cotizar:hover {
+    background-color: #66b108;
+    color: white;
+}
+
+.box-form{
+    background-color: #ffffffd1 !important;
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.bg-trayecto{
+    background-color: #fff0d8;
+    border-radius: 5px;
+}
+
+.card{
+    background-color: #ffffffd1 !important;
+}
+.color-text{
+    color: #2a2f38;
+}
+
+.img-fondo{
+    background-image: url('../img/fondo-penol.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 0px!important;
+}
+.bg-glass {
+    /* background: rgba(255, 255, 255, 0.2); */
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(10px);
 }

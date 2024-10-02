@@ -31,15 +31,15 @@ class PHP_Mailer {
 				$mail = $this->load();
 				$mail->CharSet = 'UTF-8'; // Enable verbose debug output
 				$mail->isSMTP(); // Set mailer to use SMTP
-				$mail->Host = 'smtp.gmail.com'; // Specify main and backup SMTP servers
+				$mail->Host = 'smtp.hostinger.com'; // Specify main and backup SMTP servers
 				$mail->SMTPAuth = true; // Enable SMTP authentication
-				$mail->Username = '*************'; // SMTP username (REEMPLAZAR EN LOCAL CON EL CORREO DEL SMTP - NO SUBIR)
-				$mail->Password = '********'; // SMTP password   (REEMPLAZAR EN LOCAL CON LA CONTRASEÑA DEL SMTP - NO SUBIR)
+				$mail->Username = 'administrador@transdorado.co'; // SMTP username (REEMPLAZAR EN LOCAL CON EL CORREO DEL SMTP - NO SUBIR)
+				$mail->Password = 'Dereck0212*'; // SMTP password   (REEMPLAZAR EN LOCAL CON LA CONTRASEÑA DEL SMTP - NO SUBIR)
 				$mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
 				$mail->Port = 587;
-				$mail->setFrom('juanjose.guevararozo@gmail.com', 'Aula Competencias');
-				$mail->Subject = empty($correo->subject) ? 'Aula Competencias' : $correo->subject;
-                $mail->AddEmbeddedImage(FCPATH . "assets/img/logoAula.png", "main_logo");  //logo principal
+				$mail->setFrom('	cotizaciones@transdorado.co', 'Cotizador transdorado');
+				$mail->Subject = empty($correo->subject) ? 'Cotización' : $correo->subject;
+                $mail->AddEmbeddedImage(FCPATH . "assets/img/logo_transdorado.png", "main_logo");  //logo principal
 				$mail->IsHTML(true);
 				$mail->addAddress($correo->email);
 				if (!empty($correo->addbcc)) {
@@ -51,7 +51,7 @@ class PHP_Mailer {
 						$mail->addBcc($correo->addbcc);
 					}
 				}
-				$mail->Body = empty($correo->body) ? 'Aula Competencias' : $correo->body;
+				$mail->Body = empty($correo->body) ? 'Cotización' : $correo->body;
 				if ($mail->send()) {
 					$return->success = 1;
 				} else {
