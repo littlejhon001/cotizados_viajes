@@ -11,18 +11,33 @@ class Home extends CI_Controller
         //     $this->iffalse('Acceso denegado');
         //     $this->json();
         //     die();
-        $this->load->model('Tarifas_model');
+        $this->load->model('Destinos_model');
+        $this->load->model('Vehiculos_model');
+        $this->load->model('Precios_model');
     }
     public function index()
     {
         // console($this->session->userdata('user_data'));
 
-        $data['tarifas'] = $this->Tarifas_model->findAll();
+        $data['destinos'] = $this->Destinos_model->findAll();
+        $data['vehiculos'] = $this->Vehiculos_model->findAll();
+        // $data['dia'] = $this->Precios_model->get_dia($id_destino, $id_vehiculo);
 
         $this->load->view('layouts/header_web');
         $this->load->view('index', $data);
         $this->load->view('layouts/footer');
     }
+
+    public function get_tarifa(){
+        $id_destino = $this->input->post('id_destino');
+        $id_vehiculo = $this->input->post('id_vehiculo');
+        $dia = $this->input->post('dia');
+        $data = $this->Precios_model->get_tarifa($id_destino, $id_vehiculo, $dia);
+        $this->json($data);
+    }
+
+
+
     public function cotizacion()
     {
         $emular_datos = (object) array(
