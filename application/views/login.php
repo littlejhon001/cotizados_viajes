@@ -15,7 +15,7 @@
     <div class="row no-gutter">
         <!-- The image half -->
         <div class="col-md-6 d-none d-md-flex bg-image animate__fadeIn animate__animated">
-            <img class="img_bg" src="<?php echo IP_SERVER ?>assets/img/festival_image.jpg" alt="">
+            <!-- <img class="img_bg" src="https://www.vansbogota.com/wp-content/uploads/2024/03/WhatsApp-Image-2024-02-28-at-5.50.49-PM.webp" alt=""> -->
         </div>
         <!-- The content half -->
         <div class="col-md-6 bg-login animate__fadeIn animate__animated">
@@ -24,11 +24,11 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-10 col-xl-7 mx-auto">
+                            <h3 class="display-4 text-white text-center">Administrador</h3>
                             <div class="text-center">
-                                <img class="" src="<?php echo IP_SERVER ?>/assets/img/event_on.png" width="200px"
-                                    alt="">
+                                <img class="" src="<?php echo IP_SERVER ?>/assets/img/logo_transdorado.png"
+                                    width="300px" alt="">
                             </div>
-                            <h3 class="display-4 text-white text-center">Event On</h3>
                             <p class=" mb-4 text-white">Inicia sesión</p>
                             <form id="ingresar" method="post">
 
@@ -149,7 +149,7 @@
                             showConfirmButton: false,
                             timer: 1000
                         }).then(() => {
-                            location.assign('<?php echo IP_SERVER ?>Home');
+                            location.assign('<?php echo IP_SERVER ?>Home/admin');
                         });
                     } else {
                         let errorMessage = Object.values(result.msg).join('');

@@ -59,64 +59,46 @@
         <!-- End Navbar -->
         <div class="container-fluid py-4">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="text-white ">Event On: Gestión de eventos</h2>
-                <div>
+                <h2 class="text-white ">Cotizaciones realizadas</h2>
+                <!-- <div>
                     <button class="btn-add-event" data-bs-toggle="modal" data-bs-target="#modal_evento">Agregar
                         evento</button>
-                </div>
+                </div> -->
             </div>
             <div class="row">
                 <div class=" position-relative z-index-2">
                     <div class="card bg-negro-tercero card_eventos border p-2">
                         <div class="">
                             <div>
-                                <h3 class="text-white ">Todos los eventos:</h3>
+                                <h3 class="text-white ">Todos los usuarios:</h3>
                             </div>
                         </div>
-
                         <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">Nombre</th>
-                                    <th scope="col">ubicación</th>
-                                    <th scope="col">Artista</th>
-                                    <th scope="col">Capacidad</th>
-                                    <th scope="col">Escenario</th>
-                                    <th scope="col">logo</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Acciones</th>
+                                    <th scope="col">Apellido</th>
+                                    <th scope="col">Teléfono</th>
+                                    <th scope="col">correo</th>
+                                    <th scope="col">Destino</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">vehículo</th>
+                                    <th scope="col">dia</th>
+                                    <th scope="col">fecha</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($eventos as $row) { ?>
+                                <?php foreach ($usuarios as $cotizaciones) { ?>
                                     <tr>
-                                        <th scope="col" class="text-white"><?php echo $row->nombre; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $row->ubicacion; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $row->artista; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $row->capacidad; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $row->escenario; ?></th>
-                                        <th scope="col" class="text-white"><img class="rounded-circle" src="<?php echo $row->imagen; ?>" width="50" height="50" alt=""></th>
-                                        <th scope="col" class="text-white"><?php echo $row->estado; ?></th>
-                                        <th scope="col" class="text-white">
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-warning editar-evento"
-                                                    data-id="<?php echo $row->id; ?>"
-                                                    data-nombre="<?php echo $row->nombre; ?>"
-                                                    data-ubicacion="<?php echo $row->ubicacion; ?>"
-                                                    data-estado="<?php echo $row->estado; ?>"
-                                                    data-artista="<?php echo $row->artista; ?>"
-                                                    data-capacidad="<?php echo $row->capacidad; ?>"
-                                                    data-descripcion="<?php echo $row->descripcion; ?>"
-                                                    data-ulr_imagen="<?php echo $row->ulr_imagen; ?>"
-                                                    data-escenario="<?php echo $row->escenario; ?>">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-danger eliminar_evento"
-                                                data-id="<?php echo $row->id; ?>">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->nombre; ?></th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->apellido; ?></th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->telefono; ?></th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->correo; ?></th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->trayecto; ?></th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->precio; ?></th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->vehiculo; ?></th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->dia; ?></th>
+                                        <th scope="col" class="text-white"><?php echo $cotizaciones->created_at; ?></th>
                                     </tr>
                                 <?php } ?>
                             </tbody>

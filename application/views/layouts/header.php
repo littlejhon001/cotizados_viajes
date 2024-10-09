@@ -106,11 +106,11 @@
         <ul class="navbar-nav">
 
             <li class="nav-item ">
-                <a class="nav-link text-dark " href="<?php echo IP_SERVER ?>Home">
+                <a class="nav-link text-dark " href="<?php echo IP_SERVER ?>Home/admin">
                     <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10 text-white ">dashboard</i>
                     </div>
-                    <span class="nav-link-text ms-1 text-white ">Inicio</span>
+                    <span class="nav-link-text ms-1 text-white ">Destinos</span>
                 </a>
             </li>
 
@@ -120,13 +120,13 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-dark " href="#">
+                <a class="nav-link text-dark " href="<?php echo IP_SERVER?>home/usuarios">
 
                     <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10 text-white ">person</i>
                     </div>
 
-                    <span class="nav-link-text ms-1 text-white ">Perfil</span>
+                    <span class="nav-link-text ms-1 text-white ">Usuarios</span>
                 </a>
             </li>
 

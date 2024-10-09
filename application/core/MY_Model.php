@@ -103,6 +103,7 @@ class MY_Model extends CI_Model
 	 * @param mixed $id
 	 * @param mixed $data
 	 * @return void
+	 *
 	 */
 	public function update($id, $data)
 	{

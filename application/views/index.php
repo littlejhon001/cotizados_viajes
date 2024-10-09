@@ -149,24 +149,28 @@
         <div class="container pb-4 ">
             <div class="row">
                 <div class="col-6">
-                    <h2 class="text-white">
-                        La tarifa para el trayecto seleccionado es:
-                    </h2>
+
                     <div class="card border-0 bg-white mt-3" style="width:auto;">
                         <div class="card-header border-0">
-                            <div class="d-flex">
-                                <i class="bi bi-geo-alt fs-5 text-danger mx-2"></i>
-                                <h4 class="color-text" id="destino">Destino o trayecto:</h4>
-                            </div>
+                            <h2>
+                                Cotización de tu viaje ideal
+                            </h2>
                         </div>
                         <div class="card-body">
                             <div class="d-flex">
+                                <i class="bi bi-geo-alt fs-5 text-danger me-2"></i>
+                                <h3 class="color-text">Destino o trayecto:</h3>
+                                <h3 class="color-text ms-auto" id="destino">Seleccione</h3>
+                            </div>
+                            <div class="d-flex">
                                 <i class="bi bi-car-front-fill me-2 fs-5"></i>
-                                <h4 class="color-text" id="vehiculo_seleccionado">Vehículo: Selecciona</h4>
+                                <h4 class="color-text">Vehículo:</h4>
+                                <h4 class="color-text ms-auto" id="vehiculo_seleccionado">Seleccione</h4>
                             </div>
                             <div class="d-flex">
                                 <i class="bi bi-cash fs-5 me-2"></i>
-                                <h4 class="color-text" id="precio">Precio:0$ </h4>
+                                <h4 class="color-text">Precio total:</h4>
+                                <h4 class="ms-auto " id="precio">0$</h4>
                             </div>
 
                         </div>
@@ -182,36 +186,7 @@
                                     con un agente
                                     <i class="bi bi-whatsapp"></i></a>
                             </div>
-                            <div>
-                                <label for="" class="form-check-label">
-                                    Deseas agregar mas información a tu cotización
-                                </label>
-                                <input type="checkbox" name="" id="more-info">
-                            </div>
-                            <div class="my-2 d-none animate__animated animate__fadeIn informacion-adicional">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-5">
-                                            <label for="" class="form-label">Ubicación</label>
-                                            <input type="text" class="form-control" placeholder="Ingresa tu dirección">
-                                        </div>
-                                        <div class="col-4">
-                                            <label for="" class="form-label">Hora de recogida</label>
-                                            <input type="time" class="form-control" placeholder="Hora de recogida">
-                                        </div>
-                                        <div class="col-3  d-flex align-items-center">
-                                            <div class="form-check">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Mascotas ?
-                                                </label>
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="flexCheckDefault">
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -219,9 +194,9 @@
                     <div class="  box-form  animate__animated animate__fadeInRight" id="formulario"
                         style="display:none;">
                         <h2 class="color-text">
-                            Recibirás la cotización formal en tu correo electrónico para imprimir.
+                            Recibirás esta cotización en tu correo electrónico.
                         </h2>
-                        <form id="formCotizacion">
+                        <form id="formCotizacion" action="<?php echo IP_SERVER?>home/imprimir" method="POST">
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -239,17 +214,52 @@
                                 <input type="email" class="form-control" id="correo" name="correo" required>
                             </div>
                             <div class="mb-3">
+                                <input type="checkbox" name="" class="form-check-input" id="more-info">
+                                <label for="" class="form-check-label">
+                                    Deseas agregar mas información a tu cotización
+                                </label>
+                            </div>
+                            <div class="mb-3 d-none animate__animated animate__fadeIn informacion-adicional">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label for="" class="form-label">Dirección de recogida</label>
+                                            <input type="text" class="form-control" placeholder="Ingresa tu dirección"
+                                                value="" name="direccion" id="direccion">
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="" class="form-label">Hora de recogida</label>
+                                            <input type="time" class="form-control" placeholder="Hora de recogida"
+                                                value="" id="hora" name="hora">
+                                        </div>
+                                        <div class="col-3  d-flex align-items-center">
+                                            <div class="form-check">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    Mascotas ?
+                                                </label>
+                                                <input class="form-check-input" type="checkbox" value="0" id="mascotas">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
                                 <input class="form-check-input" type="checkbox" id="politicas" name="politicas"
                                     required>
                                 <label class="form-check-label" for="politicas">
                                     Acepto políticas de privacidad <a href="http://">Política de privacidad</a>
                                 </label>
                             </div>
-                            <button class="btn btn-primary enviar_cotizacion">Enviar cotización</button>
-                            <button target="_blank" class="ms-3 btn  btn-outline-danger">
+                            <input type="hidden" id="trayecto_impresion" name="trayecto">
+                            <input type="hidden" id="vehiculo_impresion" name="vehiculo">
+                            <input type="hidden" id="dia_impresion" name="dia">
+                            <input type="hidden" id="precio_impresion" name="precio">
+                            <button class=" btn btn-primary enviar_cotizacion">Enviar cotización</button>
+                            <button id="" class="ms-3  btn  btn-outline-danger" type="submit">
                                 imprimir
                                 <i class="bi bi-printer"></i>
                             </button>
+
                         </form>
                     </div>
                 </div>
@@ -273,6 +283,52 @@
         <span class="tooltip">Contáctame</span>
     </a>
 </div>
+
+<!-- <script>
+    $('#imprimir_cot').on('click', function (e) {
+        e.preventDefault();
+        const url = '<?php echo IP_SERVER; ?>';
+        const nombre = $('#nombre').val();
+        const apellidos = $('#apellidos').val();
+        const telefono = $('#telefono').val();
+        const correo = $('#correo').val();
+        const precio = $('#precio').text();
+        const trayecto = $('#destino').text();
+        const vehiculo = $('#vehiculo_seleccionado').text();
+        const dia = $('#dia').val();
+        const politicas = $('#politicas').is(':checked');
+        const direccion = $('#direccion').val();
+        const hora = $('#hora').val();
+        const mascotas = $('#mascotas').is(':checked');
+
+        $.ajax({
+            url: url + 'home/imprimir',
+            type: 'POST',
+            data: {
+                nombre: nombre,
+                apellidos: apellidos,
+                telefono: telefono,
+                correo: correo,
+                precio: precio,
+                trayecto: trayecto,
+                vehiculo: vehiculo,
+                dia: dia,
+                politicas: politicas,
+                direccion: direccion,
+                hora: hora,
+                mascotas: mascotas
+
+            },
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+            },
+            error: function () {
+                console.error('Error al imprimir la cotización');
+            }
+        });
+    });
+</script> -->
 
 
 <script>
@@ -320,8 +376,12 @@
                     $('#precio').text('Precio: ' + formatearPrecio(response[0].tarifa));
                     // Obtener el texto del trayecto seleccionado
                     var trayectoSeleccionado = $('#trayecto option:selected').text();
-                    $('#destino').text('Destino o trayecto: ' + trayectoSeleccionado);
-                    $('#vehiculo_seleccionado').text('Vehículo: ' + $('#vehiculo option:selected').text());
+                    $('#destino').text(trayectoSeleccionado);
+                    $('#vehiculo_seleccionado').text($('#vehiculo option:selected').text());
+                    $('#trayecto_impresion').val(trayectoSeleccionado);
+                    $('#vehiculo_impresion').val($('#vehiculo option:selected').text());
+                    $('#dia_impresion').val(dia);
+                    $('#precio_impresion').val('Precio: ' + formatearPrecio(response[0].tarifa));
                 } else {
                     $('#precio').text('Precio: No disponible');
                     Swal.fire({
@@ -336,7 +396,6 @@
                                 `,
                         showConfirmButton: false
                     });
-
                 }
             },
             error: function () {
@@ -365,8 +424,12 @@
         const correo = $('#correo').val();
         const precio = $('#precio').text();
         const trayecto = $('#destino').text();
-        const vehiculo = $('#vehiculo').text();
+        const vehiculo = $('#vehiculo_seleccionado').text();
         const dia = $('#dia').val();
+        const politicas = $('#politicas').is(':checked');
+        const direccion = $('#direccion').val();
+        const hora = $('#hora').val();
+        const mascotas = $('#mascotas').is(':checked');
 
         // Mostrar el loader
         Swal.fire({
@@ -388,7 +451,12 @@
                 precio: precio,
                 trayecto: trayecto,
                 vehiculo: vehiculo,
-                dia: dia
+                dia: dia,
+                politicas: politicas,
+                direccion: direccion,
+                hora: hora,
+                mascotas: mascotas
+
             },
             dataType: 'json',
             success: function (response) {
@@ -423,93 +491,6 @@
 </script>
 
 
-<script>
-    // Obtén los datos desde PHP en formato JSON
-    var tarifas = <?php echo json_encode($tarifas); ?>;
-
-    // Selecciona los elementos del DOM
-    var selectTrayecto = document.getElementById('trayecto');
-    var selectDia = document.getElementById('dia');
-    var precio = document.getElementById('precio');
-    var destino = document.getElementById('destino');
-    var vehiculo = document.getElementById('vehiculo'); // Nuevo elemento para el vehículo
-    var enviarCorreo = document.getElementById('enviar_correo1');
-
-    // Función para formatear el precio en pesos colombianos
-    function formatearPrecio(precio) {
-        return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(precio);
-    }
-
-    // Escuchar cambios en el select de trayecto
-    selectTrayecto.addEventListener('change', function () {
-        var trayectoSeleccionado = tarifas.find(function (trayecto) {
-            return trayecto.id == selectTrayecto.value;
-        });
-
-        // Resetear el select de días, el precio, el destino y el vehículo al cambiar de trayecto
-        selectDia.value = '';
-        precio.innerText = 'Precio: ';
-        destino.innerText = 'Destino o trayecto: ';
-        vehiculo.innerText = 'Vehículo: '; // Resetear el vehículo
-    });
-
-    // Escuchar cambios en el select de días
-    selectDia.addEventListener('change', function () {
-        var trayectoSeleccionado = tarifas.find(function (trayecto) {
-            return trayecto.id == selectTrayecto.value;
-        });
-
-        if (trayectoSeleccionado) {
-            var precioDia;
-            switch (selectDia.value) {
-                case '1':
-                    precioDia = trayectoSeleccionado.dia1;
-                    break;
-                case '2':
-                    precioDia = trayectoSeleccionado.dia2;
-                    break;
-                case '3':
-                    precioDia = trayectoSeleccionado.dia3;
-                    break;
-                default:
-                    precioDia = null;
-            }
-
-            if (precioDia) {
-                precio.innerText = 'Precio: ' + formatearPrecio(precioDia);
-                destino.innerText = 'Destino o trayecto: ' + trayectoSeleccionado.destino;
-                vehiculo.innerText = 'Vehículo: ' + trayectoSeleccionado.vehiculo; // Mostrar el vehículo
-                enviarCorreo.classList.remove('d-none');
-            } else {
-                Swal.fire({
-                    title: "Tarifa no disponible",
-                    icon: "error",
-                    html: `
-                                    <p>Comunícate con nosotros para recibir mas información</p>
-                                    <a href="https://wa.link/9bwsji" target="_blank"style="display: inline-flex; align-items: center; padding: 10px 20px; background-color: #25D366; color: white; text-decoration: none; border-radius: 5px;">
-                                    Ir a WhatsApp
-                                    <i class="ms-2 bi bi-whatsapp"></i>
-                                    </a>
-                                `,
-                    showConfirmButton: false
-                });
-                precio.innerText = 'Precio: ';
-                destino.innerText = 'Destino o trayecto: ';
-                vehiculo.innerText = 'Vehículo: '; // Resetear el vehículo
-            }
-        }
-    });
-
-    var mostrar_fomulario = document.getElementById('enviar_correo1');
-
-    mostrar_fomulario.addEventListener('click', function () {
-
-        var formulario = document.getElementById('formulario');
-        formulario.style.display = 'block';
-
-    });
-
-</script>
 
 <script src="https://cdn.lordicon.com/lordicon.js"></script>
 

@@ -1,279 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+
 <head>
+    <meta charset="UTF-8">
+    <title>Cotización de Viaje</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
-
-
-
         body {
-            font-family: "Afacad Flux", sans-serif;
-            margin-left: 1cm;
-            margin-right: 1cm;
-            margin-bottom: 2cm;
-            background-color: white;
+            font-family: Arial, sans-serif;
         }
 
-        table {
-            font-size: 14px !important;
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            color: #555;
         }
 
-        .encabezado {
-            margin-top: 20px;
+        .invoice-box table {
             width: 100%;
-            padding-bottom: 150px;
+            line-height: inherit;
+            text-align: left;
         }
 
-        .texto {
-            float: left;
-        }
-
-        .logo {
-            float: right;
-        }
-
-        .solicitado {
-            padding-top: 0px !important;
-            padding-left: 30px;
-            padding-right: 30px;
-            background-color: #dddbdbe7;
-            margin: 0px !important;
-            display: flex;
-            text-align: justify;
-        }
-
-        /* Forzar envoltura de línea */
-        .solicitado::after {
-            content: '';
-            display: inline-block;
-            width: 100%;
-        }
-
-        /* Estilos para los elementos internos */
-        .solicitado>div {
-            display: inline-block;
+        .invoice-box table td {
+            padding: 5px;
             vertical-align: top;
-            box-sizing: border-box;
-            width: calc(50% - 15px);
-            padding: 10px;
         }
 
-        .solicitado div p {
-            margin: 0;
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
         }
 
-        .solicitado div label {
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 40px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
             font-weight: bold;
         }
 
-        .texto-blanco {
-            color: #dddbdbe7;
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
         }
 
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            color: #212529;
-            background-color: transparent;
-            border-collapse: collapse;
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
         }
 
-        .table th,
-        .table td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
         }
 
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .table tbody+tbody {
-            border-top: 2px solid #dee2e6;
-        }
-
-        .table-sm th,
-        .table-sm td {
-            padding: 0.3rem;
-        }
-
-        .table-bordered {
-            border: 2px solid #fff;
-        }
-
-        .table-bordered th,
-        .table-bordered td {
-            border: 2px solid #fff;
-        }
-
-        .table-bordered thead th,
-        .table-bordered thead td {
-            border-bottom-width: 2px;
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: rgba(0, 0, 0, 0.075);
-        }
-
-        .tr-estilo {
-            background-color: #dddbdbe7;
-            vertical-align: center;
-            text-align: center;
-        }
-
-        thead .tr-estilo {
-            border-bottom: 3px solid #fff;
-            background-color: #323ead;
-            color: #fff;
-        }
-
-        tbody tr .tr-estilo {
-            border-bottom: 3px solid #fff;
-            background-color: #8fd19e;
-            color: #000;
-        }
-
-        .parrafo {
-            text-align: justify;
-            font-size: 14px;
-            font-family: 'Comic Neue', sans-serif;
-            font-style: italic;
-        }
-
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2cm;
-            text-align: center;
-            /* Centra el texto en el footer */
-            font-size: 12px;
-            /* Tamaño de fuente para el footer */
-            line-height: 2cm;
-            /* Alinea verticalmente el texto en el footer */
-        }
-
-        body {
-            margin-bottom: 2.5cm;
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
         }
     </style>
 </head>
-<?php $now = date('Y-m-d'); ?>
+
 <body>
-    <div class="container-fluid">
-        <div class="encabezado">
-            <div class="texto">
-                <h2>Transdorado
-                </h2>
-                <br>
-                BOGOTA - COLOMBIA. CRA 9 ESTE # 1 A - 56 <br>
-                311 596 6555 - 314 228 5823 - 601 750 59 68
+    <div class="invoice-box">
+        <table>
+            <tr class="top">
+                <td colspan="3">
+                    <table>
+                        <tr>
+                            <img src="https://www.transdorado.co/wp-content/uploads/2024/06/WhatsApp_Image_2024-04-15_at_20.48.28-removebg-preview.png" width="150px" alt="">
 
-            </div>
-            <div class="logo">
-                <img src="https://www.transdorado.co/wp-content/uploads/2024/06/WhatsApp_Image_2024-04-15_at_20.48.28-removebg-preview.png" alt="Logo" width="150px">
-            </div>
-        </div>
-        <div class="solicitado">
-            <div>
-                <label class="titulo">SOLICITADO POR:</label>
-                <p><?php echo $nombre; ?></p>
-                <p><?php echo $apellido; ?></p>
-            </div>
-            <div>
-                <label>ORDEN-<?php // echo $cotizacion['id'] ?></label>
-                <p class="texto-blanco">-</p>
-                <p>Fecha: <?php  echo $now ?></p>
-            </div>
-        </div>
-        <table class="table table-sm table-bordered" style="margin-top: 20px;">
-            <thead class="table-primary ">
-                <tr class="tr-estilo">
-                    <th>Destino</th>
-                    <th>N° días</th>
-                    <th>Vehículo</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="tr-estilo">
-                    <td><?php  echo $trayecto; ?></td>
-                    <td><?php  echo $dia; ?></td>
-                    <td><?php  echo $vehiculo; ?></td>
-                    <td><?php  echo $precio; ?></td>
-                </tr>
-                <tr>
-                    <td colspan="3" class="tr-estilo">Total</td>
-                    <td class="tr-estilo"><?php  echo $precio; ?></td>
-                </tr>
-            </tbody>
+                            <td class="title">
+                                <h3>Cotización de Viaje</h3>
+                            </td>
+
+                            <td>
+                                Fecha: <?php echo date('d/m/Y'); ?><br>
+                                <!-- Cotización #: <?php  //echo $cotizacion_id; ?> -->
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+
+            </tr>
+            <tr class="information">
+                <td colspan="3">
+                    <table>
+                        <tr>
+                            <td>
+                                Empresa de Viajes, Transdorado.<br>
+                                Cra. 9 Este #1a-56, Bogotá
+                                <br>
+                                Bogotá, Colombia
+                            </td>
+                            <td>
+                                Cliente:<br>
+                                <?php echo $nombre; ?><br>
+                                <?php echo $apellido; ?>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="heading">
+                <td>Destino</td>
+                <td>Día</td>
+                <td>Vehículo</td>
+            </tr>
+            <?php // foreach ($items as $item): ?>
+            <tr class="item">
+                <td><?php echo $trayecto; ?></td>
+                <td><?php echo $dia; ?></td>
+                <td><?php echo $vehiculo; ?></td>
+            </tr>
+            <?php // endforeach; ?>
+            <tr class="total">
+                <td></td>
+                <td></td>
+                <td>Total: <?php echo $precio; ?></td>
+            </tr>
         </table>
-        <div>
-            <p>
-                <b>Contacto:</b><br>
-                Teléfono: <?php echo $telefono; ?>
-                <b>Contacto:</b><br>
-                <a href="mailto:<?php echo $correo;?>">
-                    <?php echo $correo; ?>
-                </a>
-            </p>
-        </div>
-        <div>
-            <p>
-                <b>Mensaje:</b> <br>
-                <?php // echo $cotizacion['descripcion']; ?>
-            </p>
-            <p class="parrafo">Vehículos con aire acondicionado, tv, bluetooth, silletería reclinable y cómoda, bodega,
-                maletero.</p>
-            <p class="parrafo">
-                1. A. Los vehículos cuentan con todas las exigencias del Ministerio de Transporte y con las
-                disposiciones legales contempladas en la ley 769 del 6 de Agosto del 2002, el decreto 174 del 5 de
-                Febrero de 2001 y las normas que lo modifiquen o adiciones para la prestación del servicio público de
-                transporte terrestre automotor especial; con la documentación vigente: matrícula del vehículo, seguro
-                obligatorio SOAT, certificado de emisión de gases, certificado de revisión técnico mecánica, que estén
-                dotados del equipo de carretera reglamentario, cubrir y todos los costos de mantenimiento del vehículo,
-                y demás normas que regulen y lleguen a regular el servicios de transporte de pasajeros y las normas de
-                tránsito. <br>
-                2. B. vansbogota.com será responsable del suministro de conductores, insumos, equipos, herramientas,
-                materiales, combustibles, lubricantes, o cualquier otro elemento o material necesario para la normal
-                operación del vehículo y prestación del servicio y cubrir todos los costos de metimiento del vehículo o
-                infracciones de tránsito en las que incurran. d. Disponer de los conductores idóneos, capacitados, con
-                sus licencias de conducción vigentes y con experiencia en el manejo de transporte vehicular de pasajeros
-                necesarios para este evento, los cuales deben caracterizare por el buen trato y respeto al personal
-                beneficiado. <br>
-                3. C. Para hacer su reservación por favor enviar al WhatsApp 3115966555 la cedula o pasaporte si es
-                extranjero o cámara de comercio si es empresa de la persona o entidad contratante. Datos del responsable
-                del contrato nombre, cedula dirección y teléfono lugar y hora de salida. <br>
-                4. D. Para reservar se debe apartar con el 10% de la totalidad del servicio a nequi,3115966555,
-                Bancolombia cuenta de ahorros # 11305155928, Davivienda ahorros # 45790025257. El resto del servicio se
-                cancelará antes de arrancar el 60% y antes del regreso el restante del 100% de la totalidad. <br><br>
-                5. E. Si el destino al que contrataste esta menos de 5 min o 2 km en vía pavimentada en auto, no tiene
-                ningún costo adicional. Si el destino queda entre 5 min y 15min debe cancelar $ 50.000 si el destino
-                esta entre 15 min y 30 min tiene un valor de $ 100.000 mil pesos si es mas de media hora se debe revisar
-                la ubicación y verificar la tarifa y se le indicara el nuevo precio. Todo destino excedente queda a
-                placer del conductor si la vía es destapada, (trocha) o el vehículo no puede ingresar no nos haceos
-                responsables del traslado,(SE HACE EL TRASLADO HASTA DONDE LA VIA ESTE PAVIMENTADA.<br>
-            </p>
+    </div>
 
-            <p>Atento a sus comentarios.</p>
-            <p>Coordialmente:</p>
-            <!-- <img src="<?php // echo // RUTA_BASE; ?>assets/imagenes/firma.png" alt="firma" width="180px"> -->
-            <p>ROGER STEVEN ESPEJO <br>
-                Cargo: Gerente General <br>
-            </p>
-        </div>
+    <div>
+        <p>
+            <b>Mensaje:</b> <br>
+            <?php // echo $cotizacion['descripcion']; ?>
+        </p>
+
+        <p class="parrafo">
+            A.
+            Los vehículos cumplen con todas las exigencias establecidas por el Ministerio de Transporte y con las
+            disposiciones legales contempladas en la Ley 769 del 6 de agosto de 2002, el Decreto 174 del 5 de febrero de
+            2001, así como las normas que los modifiquen o adicionen para la prestación del servicio público de
+            transporte terrestre automotor especial. Los vehículos cuentan con la documentación vigente, incluyendo
+            matrícula, seguro obligatorio SOAT, certificado de emisión de gases y certificado de revisión
+            técnico-mecánica. Asimismo, están equipados con el equipo de carretera reglamentario, y se cubren todos los
+            costos de mantenimiento del vehículo, en conformidad con las normas aplicables al transporte de pasajeros y
+            tránsito.
+            <br>
+            <br>
+
+            B.
+            Vansbogota.com será responsable de proveer conductores, insumos, equipos, herramientas, materiales,
+            combustibles, lubricantes y cualquier otro elemento necesario para la operación normal del vehículo y la
+            prestación del servicio. Además, asumirá todos los costos relacionados con el mantenimiento del vehículo y
+            las infracciones de tránsito que pudieran ocurrir. La empresa también dispondrá de conductores idóneos,
+            capacitados, con licencias de conducción vigentes y con experiencia en el transporte de pasajeros. Dichos
+            conductores deberán destacarse por su trato respetuoso y cordial hacia el personal beneficiado.
+            <br>
+            <br>
+            C.
+            Para realizar su reservación, por favor envíe al WhatsApp 3115966555 una copia de la cédula o pasaporte, en
+            caso de ser extranjero, o el certificado de cámara de comercio si es una empresa. Incluya también los datos
+            del responsable del contrato: nombre completo, cédula, dirección y número de teléfono, así como el lugar y
+            la hora de salida.
+            <br>
+            <br>
+            D.
+            Para reservar, se debe realizar un depósito equivalente al 10% del total del servicio a través de Nequi o
+            Daviplata (número 3115966555), o a las siguientes cuentas bancarias: Bancolombia, cuenta de ahorros #
+            11305155928; Davivienda, cuenta de ahorros # 45790025257. El 60% restante deberá ser cancelado antes del
+            inicio del servicio y el saldo final antes del regreso. También aceptamos pagos a través de PayPal en la
+            dirección gerencia@transdorado.com.
+            <br>
+            <br>
+            Agradecemos su contacto y nos comprometemos a satisfacer sus necesidades. Nuestros vehículos son modelos
+            recientes y se encuentran en excelentes condiciones. Quedamos atentos a sus comentarios.
+        </p>
+        <p>Atento a sus comentarios.</p>
+        <p>Cordialmente:</p>
+        <img src="https://www.vansbogota.com/wp-content/uploads/2024/10/firma.jpeg" alt="firma" width="180px">
+        <p>ROGER STEVEN ESPEJO <br>
+            Cargo: Gerente General <br>
+        </p>
+    </div>
     </div>
     <footer>
         <div class="container-fluid">
             <p>
-                <a href="https://www.vansbogota.com/" target="_blank">VansBogota</a> - Todos los derechos reservados
+                <a href="https://www.transdorado.co/" target="_blank">Transdorado</a> - Todos los derechos reservados
                 <?php echo date('Y'); ?>
             </p>
         </div>
     </footer>
 </body>
+
+</html>

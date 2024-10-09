@@ -79,7 +79,7 @@ class Login extends CI_Controller
 		$email = $this->input->post('email');
 		$password = $this->input->post('contrasena');
 		// Obtener el usuario autenticado desde el modelo de inicio de sesión
-		$user = $this->Login_model->get_user($email,$password); //Se compara con la contraseña hasheada
+		$user = $this->Login_model->get_user($email,$password);
 
 		if ($user) {
 			// Usuario autenticado
