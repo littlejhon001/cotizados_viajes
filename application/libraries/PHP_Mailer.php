@@ -2,7 +2,7 @@
 if (!defined('BASEPATH')) {
 	exit('No direct script access allowed');
 }
-class PHP_Mailer {
+class Php_mailer {
 	public function __construct() {
 		log_message('Debug', 'PHPMailer class is loaded.');
 	}
