@@ -114,6 +114,8 @@ class Home extends CI_Controller
         $politicas = $this->input->post('politicas') === 'true' || $this->input->post('politicas') === 'on' ? 1 : 0;
         $mascotas = $this->input->post('mascotas') === 'true' || $this->input->post('mascotas') === 'on' ? 1 : 0;
 
+        $comentarios = $this->input->post('comentarios');
+
         // Crear un objeto con los datos del formulario
         $data = (object) array(
             'correo' => $correo,
@@ -128,6 +130,7 @@ class Home extends CI_Controller
             'hora' => $hora,
             'direccion' => $direccion,
             'mascota' => $mascotas,
+            'comentarios' => $comentarios,
             'created_at' => $created_at
         );
 

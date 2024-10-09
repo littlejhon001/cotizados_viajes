@@ -14,17 +14,6 @@
     @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 
-    df-messenger {
-        z-index: 999;
-        position: fixed;
-        --df-messenger-font-color: #000;
-        --df-messenger-font-family: Google Sans;
-        --df-messenger-chat-background: #f3f6fc;
-        --df-messenger-message-user-background: #cdf6d1;
-        --df-messenger-message-bot-background: #badff3;
-        bottom: 16px;
-        right: 16px;
-    }
 
 
 
@@ -79,6 +68,26 @@
         border-radius: 25px;
     }
 
+    .select2-container .select2-selection--single {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        height: 38px !important;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        /* height: 35px; */
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444;
+        line-height: 36px!important;
+    }
 
 
     /* ? ----- MAIN ----- */
@@ -86,7 +95,7 @@
 
 
 <div class="text-video">
-    <h2 class="text-center text-white">
+    <h2 class="text-center text-white fs-md-2 fs-5">
         Realiza la cotización de tu trayecto ideal, selecciona el trayecto, el vehículo y el día.
     </h2>
     <div class="d-flex justify-content-center">
@@ -107,7 +116,7 @@
             <h2 class="fs-1 color-text">
                 Tenemos el viaje ideal para ti
             </h2>
-            <div class="col-md-6  ">
+            <div class="col-md-6 col-12  ">
                 <label for="trayecto" class="form-label text-white">Destino</label>
                 <select class="form-select" id="trayecto" name="trayecto">
                     <option selected>Seleccione un destino</option>
@@ -118,7 +127,7 @@
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-3  ">
+            <div class="col-md-3  col-12">
                 <label for="vehiculo" class="form-label text-white">Seleccione el Vehículo</label>
                 <select class="form-select" id="vehiculo" name="vehiculo">
                     <option value="">Seleccione un día</option>
@@ -148,7 +157,7 @@
         </div>
         <div class="container pb-4 ">
             <div class="row">
-                <div class="col-6">
+                <div class="col-md-6 col-12">
 
                     <div class="card border-0 bg-white mt-3" style="width:auto;">
                         <div class="card-header border-0">
@@ -157,26 +166,26 @@
                             </h2>
                         </div>
                         <div class="card-body">
-                            <div class="d-flex">
+                            <div class="d-flex   flex-column flex-md-row">
                                 <i class="bi bi-geo-alt fs-5 text-danger me-2"></i>
                                 <h3 class="color-text">Destino o trayecto:</h3>
                                 <h3 class="color-text ms-auto" id="destino">Seleccione</h3>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex flex-column flex-md-row">
                                 <i class="bi bi-car-front-fill me-2 fs-5"></i>
                                 <h4 class="color-text">Vehículo:</h4>
                                 <h4 class="color-text ms-auto" id="vehiculo_seleccionado">Seleccione</h4>
                             </div>
-                            <div class="d-flex">
+                            <div class="d-flex  flex-column flex-md-row">
                                 <i class="bi bi-cash fs-5 me-2"></i>
                                 <h4 class="color-text">Precio total:</h4>
                                 <h4 class="ms-auto " id="precio">0$</h4>
                             </div>
-
                         </div>
                         <div class="card-footer border-0 ">
-                            <div class="d-flex justify-content-end">
-                                <button class="btn btn-primary d-none animate__animated animate__fadeInLeft "
+                            <div class="d-flex justify-content-end  flex-column flex-md-row">
+                                <button
+                                    class="btn btn-primary mb-2 mb-md-0 d-none animate__animated animate__fadeInLeft "
                                     id="enviar_correo1">
                                     Enviar esta cotización a mi
                                     correo
@@ -190,13 +199,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6 col-12">
                     <div class="  box-form  animate__animated animate__fadeInRight" id="formulario"
                         style="display:none;">
                         <h2 class="color-text">
                             Recibirás esta cotización en tu correo electrónico.
                         </h2>
-                        <form id="formCotizacion" action="<?php echo IP_SERVER?>home/imprimir" method="POST">
+                        <form id="formCotizacion" action="<?php echo IP_SERVER ?>home/imprimir" method="POST">
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -222,22 +231,30 @@
                             <div class="mb-3 d-none animate__animated animate__fadeIn informacion-adicional">
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-5">
+                                        <div class="col-12 col-md-5">
                                             <label for="" class="form-label">Dirección de recogida</label>
                                             <input type="text" class="form-control" placeholder="Ingresa tu dirección"
                                                 value="" name="direccion" id="direccion">
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-12 col-md-4">
                                             <label for="" class="form-label">Hora de recogida</label>
                                             <input type="time" class="form-control" placeholder="Hora de recogida"
                                                 value="" id="hora" name="hora">
                                         </div>
-                                        <div class="col-3  d-flex align-items-center">
+                                        <div class="col-12 col-md-3  d-flex align-items-center">
                                             <div class="form-check">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     Mascotas ?
                                                 </label>
                                                 <input class="form-check-input" type="checkbox" value="0" id="mascotas">
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-3 ">
+                                            <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Comentarios"
+                                                    id="comentarios" id="floatingTextarea2"
+                                                    style="height: 100%"></textarea>
+                                                <label for="floatingTextarea2">Comentarios</label>
                                             </div>
                                         </div>
                                     </div>
@@ -254,11 +271,14 @@
                             <input type="hidden" id="vehiculo_impresion" name="vehiculo">
                             <input type="hidden" id="dia_impresion" name="dia">
                             <input type="hidden" id="precio_impresion" name="precio">
-                            <button class=" btn btn-primary enviar_cotizacion">Enviar cotización</button>
-                            <button id="" class="ms-3  btn  btn-outline-danger" type="submit">
-                                imprimir
-                                <i class="bi bi-printer"></i>
-                            </button>
+                            <div class="d-flex flex-column flex-md-row">
+                                <button class=" btn btn-primary enviar_cotizacion mb-2 mb-md-0 ">Enviar
+                                    cotización</button>
+                                <button id="" class="ms-3  btn  btn-outline-danger" type="submit">
+                                    imprimir
+                                    <i class="bi bi-printer"></i>
+                                </button>
+                            </div>
 
                         </form>
                     </div>
@@ -430,6 +450,7 @@
         const direccion = $('#direccion').val();
         const hora = $('#hora').val();
         const mascotas = $('#mascotas').is(':checked');
+        const comentarios = $('#comentarios').val();
 
         // Mostrar el loader
         Swal.fire({
@@ -455,7 +476,8 @@
                 politicas: politicas,
                 direccion: direccion,
                 hora: hora,
-                mascotas: mascotas
+                mascotas: mascotas,
+                comentarios: comentarios
 
             },
             dataType: 'json',
@@ -488,6 +510,15 @@
     });
 
 
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $('#trayecto').select2({
+        placeholder: 'Select an option'
+    });
 </script>
 
 

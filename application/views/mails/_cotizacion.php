@@ -138,8 +138,17 @@
 
     <div>
         <p>
-            <b>Mensaje:</b> <br>
-            <?php // echo $cotizacion['descripcion']; ?>
+            <b>Mensaje:</b>
+            <br>
+            Hora: <?php  echo $hora; ?>
+            <br>
+            <br>
+            Dirección: <?php  echo $direccion; ?>
+            <br>
+            <br>
+            Comentarios:
+            <?php  echo $comentarios; ?>
+            <br> <br>
         </p>
 
         <p class="parrafo">

@@ -18,7 +18,8 @@
     <meta name="DC.date" content="2020-04-22 010:00:00 AM" />
     <meta name="DC.language" content="ES" />
 
-    <link rel="shortcut icon" href="<?php echo IP_SERVER ?>assets/img/event_on.png" title="CCS" id="CCS" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?php echo IP_SERVER ?>assets/img/event_on.png" title="CCS" id="CCS"
+        type="image/x-icon" />
 
     <link href="<?php echo IP_SERVER ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo IP_SERVER ?>assets/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
@@ -70,6 +71,8 @@
     <!-- <script src="<?php echo IP_SERVER ?>assets/datatables/dataTables.bootstrap4.js"></script> -->
     <link href="<?php echo IP_SERVER ?>assets/datatables/datatables.css" rel="stylesheet" />
     <link href="<?php echo IP_SERVER ?>assets/datatables/datatables.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- <script src="<?php //  echo IP_SERVER                ?>assets/bootstrap/js/bootstrap.bundle.min.js"></script> -->
     <script src="<?php echo IP_SERVER ?>assets/js/material-dashboard.min.js"></script>
@@ -87,16 +90,15 @@
 
 
 
-<aside
-    class="sidenav navbar navbar-vertical navbar-expand-xs z- border-radius-xl border my-3 fixed-start ms-3 shadow-sm z-3
-    bg-negro-secundario text-white  animate__animated animate__fadeInLeft"
-    id="sidenav-main">
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs z- border-radius-xl border my-3 fixed-start ms-3 shadow-sm z-3
+    bg-negro-secundario text-white  animate__animated animate__fadeInLeft" id="sidenav-main">
 
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand  text-center mb-3" href="" target="_blank">
-            <img src="<?php echo IP_SERVER ?>assets/img/logo_transdorado.png" class="navbar-brand-img  h-100" alt="main_logo">
+            <img src="<?php echo IP_SERVER ?>assets/img/logo_transdorado.png" class="navbar-brand-img  h-100"
+                alt="main_logo">
         </a>
     </div>
 
@@ -120,7 +122,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-dark " href="<?php echo IP_SERVER?>home/usuarios">
+                <a class="nav-link text-dark " href="<?php echo IP_SERVER ?>home/usuarios">
 
                     <div class="text-dark text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10 text-white ">person</i>
@@ -138,7 +140,7 @@
                         <i class="material-icons opacity-10 text-white ">login</i>
                     </div>
 
-                    <span class="nav-link-text ms-1 text-white " >Salir</span>
+                    <span class="nav-link-text ms-1 text-white ">Salir</span>
                 </a>
             </li>
 
