@@ -104,7 +104,7 @@
 </div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 m-0 p-0 ">
-    <video id="miVideo" class="miVideo" src="<?php echo IP_SERVER ?>assets/img/vide_travel_spot.mp4" autoplay loop
+    <video id="miVideo" class="miVideo" src="<?php echo IP_SERVER ?>assets/img/video_colombia.mp4" autoplay loop
         muted>
     </video>
 </div>
@@ -127,10 +127,10 @@
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-3  col-12">
+            <div class="col-md-4  col-12">
                 <label for="vehiculo" class="form-label text-white">Seleccione el Vehículo</label>
                 <select class="form-select" id="vehiculo" name="vehiculo">
-                    <option value="">Seleccione un día</option>
+                    <option value="">Seleccione un Vehículo</option>
                     <?php foreach ($vehiculos as $vehiculo) { ?>
                         <option value="<?php echo $vehiculo->id ?>">
                             <?php echo $vehiculo->vehiculo ?>
@@ -138,15 +138,15 @@
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-3  ">
+            <div class="col-md-2  ">
                 <label for="dia" class="form-label text-white">Seleccione el día</label>
                 <select class="form-select" id="dia" name="dia">
                     <option disabled selected>Seleccione un día</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="5">5</option>
-                    <option value="8">8</option>
+                    <option value="1">1 Día</option>
+                    <option value="2">2 Días</option>
+                    <option value="3">3 Días</option>
+                    <option value="5">5 Días</option>
+                    <option value="8">8 Días</option>
                 </select>
             </div>
         </div>
@@ -224,7 +224,7 @@
                             </div>
                             <div class="mb-3">
                                 <input type="checkbox" name="" class="form-check-input" id="more-info">
-                                <label for="" class="form-check-label">
+                                <label for="" class="form-check-label text-primary">
                                     Deseas agregar mas información a tu cotización
                                 </label>
                             </div>

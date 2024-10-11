@@ -102,6 +102,7 @@ body::-webkit-scrollbar-thumb {
     width: 100%;
     z-index: 999999;
     max-width: 2200px;
+    background-color: red;
 }
 
 .navbar.active {
@@ -4546,6 +4547,8 @@ footer .footer .row {
     -webkit-backdrop-filter: blur(10px);
 }
 
+.navbar {background-color: rgb(121 121 121 / 30%) !important;}
+
 @media screen and (min-width: 420px) and (max-width: 768px) {
     .text-video {
         position: absolute;
@@ -4555,3 +4558,4 @@ footer .footer .row {
         z-index: 1000;
     }
 }
+
