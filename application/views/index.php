@@ -86,7 +86,7 @@
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
         color: #444;
-        line-height: 36px!important;
+        line-height: 36px !important;
     }
 
 
@@ -104,8 +104,7 @@
 </div>
 
 <div class="col-lg-12 col-md-12 col-sm-12 m-0 p-0 ">
-    <video id="miVideo" class="miVideo" src="<?php echo IP_SERVER ?>assets/img/video_colombia.mp4" autoplay loop
-        muted>
+    <video id="miVideo" class="miVideo" src="<?php echo IP_SERVER ?>assets/img/video_colombia.mp4" autoplay loop muted>
     </video>
 </div>
 
@@ -216,7 +215,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="telefono" class="form-label">Teléfono</label>
-                                <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                                <input type="number" class="form-control" id="telefono" name="telefono" required>
                             </div>
                             <div class="mb-3">
                                 <label for="correo" class="form-label">Correo</label>
@@ -225,7 +224,9 @@
                             <div class="mb-3">
                                 <input type="checkbox" name="" class="form-check-input" id="more-info">
                                 <label for="" class="form-check-label text-primary">
-                                    Deseas agregar mas información a tu cotización
+                                    <strong>
+                                        Deseas agregar mas información a tu cotización
+                                    </strong>
                                 </label>
                             </div>
                             <div class="mb-3 d-none animate__animated animate__fadeIn informacion-adicional">
@@ -452,61 +453,73 @@
         const mascotas = $('#mascotas').is(':checked');
         const comentarios = $('#comentarios').val();
 
-        // Mostrar el loader
-        Swal.fire({
-            title: 'Enviando...',
-            text: 'Por favor espera mientras enviamos tu cotización.',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-        $.ajax({
-            url: url + 'home/enviar_cotizacion',
-            type: 'POST',
-            data: {
-                nombre: nombre,
-                apellidos: apellidos,
-                telefono: telefono,
-                correo: correo,
-                precio: precio,
-                trayecto: trayecto,
-                vehiculo: vehiculo,
-                dia: dia,
-                politicas: politicas,
-                direccion: direccion,
-                hora: hora,
-                mascotas: mascotas,
-                comentarios: comentarios
+        // Validar que todos los campos estén llenos
+        if (!nombre || !apellidos || !telefono || !correo || !precio || !trayecto || !vehiculo || !dia || !politicas) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Por favor, completa todos los campos obligatorios.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+        }
+        else {
+            // Mostrar el loader
+            Swal.fire({
+                title: 'Enviando...',
+                text: 'Por favor espera mientras enviamos tu cotización.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            $.ajax({
+                url: url + 'home/enviar_cotizacion',
+                type: 'POST',
+                data: {
+                    nombre: nombre,
+                    apellidos: apellidos,
+                    telefono: telefono,
+                    correo: correo,
+                    precio: precio,
+                    trayecto: trayecto,
+                    vehiculo: vehiculo,
+                    dia: dia,
+                    politicas: politicas,
+                    direccion: direccion,
+                    hora: hora,
+                    mascotas: mascotas,
+                    comentarios: comentarios
 
-            },
-            dataType: 'json',
-            success: function (response) {
-                if (response.status === 'success') {
-                    Swal.fire({
-                        title: '¡Éxito!',
-                        text: response.message,
-                        icon: 'success',
-                        confirmButtonText: 'Aceptar'
-                    });
-                } else {
+                },
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.message,
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+                    }
+                },
+                error: function () {
                     Swal.fire({
                         title: 'Error',
-                        text: response.message,
+                        text: 'Hubo un problema al enviar el correo.',
                         icon: 'error',
                         confirmButtonText: 'Aceptar'
                     });
                 }
-            },
-            error: function () {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Hubo un problema al enviar el correo.',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
-            }
-        });
+            });
+        }
     });
 
 

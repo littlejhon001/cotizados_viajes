@@ -110,7 +110,9 @@
                             <td>
                                 Cliente:<br>
                                 <?php echo $nombre; ?><br>
-                                <?php echo $apellido; ?>
+                                <?php echo $apellido; ?><br><br>
+                                <?php echo $telefono; ?><br><br>
+                                <?php echo $correo; ?>
                             </td>
                         </tr>
                     </table>

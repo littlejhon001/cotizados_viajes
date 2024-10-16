@@ -97,6 +97,7 @@ class Login extends CI_Controller
 
 	public function logout()
 	{
+		$this->session->user_data = null;
 		// Limpiar la sesión y redirigir al formulario de inicio de sesión
 		$this->session->sess_destroy(); // Elimina todos los datos de la sesión
 		redirect('login'); // Redirige al formulario de inicio de sesión

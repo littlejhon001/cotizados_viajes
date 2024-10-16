@@ -81,8 +81,6 @@
                 <td colspan="3">
                     <table>
                         <tr>
-                            <img src="<?php echo IP_SERVER ?>assets/img/logo_transdorado.png" width="150px" alt="">
-
                             <td class="title">
                                 <h3>Cotización de Viaje</h3>
                             </td>
@@ -110,7 +108,9 @@
                             <td>
                                 Cliente:<br>
                                 <?php echo $nombre; ?><br>
-                                <?php echo $apellido; ?>
+                                <?php echo $apellido; ?><br>
+                                <?php echo $telefono; ?><br>
+                                <?php echo $correo; ?>
                             </td>
                         </tr>
                     </table>
