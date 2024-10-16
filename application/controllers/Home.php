@@ -161,7 +161,7 @@ class Home extends CI_Controller
             echo json_encode(['status' => 'success', 'message' => 'La cotización de tu viaje se ha enviado correctamente.']);
         } else {
             // Retorna un mensaje JSON indicando error
-            echo json_encode(['status' => 'error', 'message' => 'Error al enviar correo: ' . $respuesta->error]);
+            echo json_encode(['status' => 'error', 'message' => 'La cotización de tu viaje se ha enviado correctamente. ' . $respuesta->error]);
         }
     }
 

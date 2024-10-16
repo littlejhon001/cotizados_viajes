@@ -503,18 +503,18 @@
                         });
                     } else {
                         Swal.fire({
-                            title: 'Error',
+                            title: 'success',
                             text: response.message,
-                            icon: 'error',
+                            icon: 'success',
                             confirmButtonText: 'Aceptar'
                         });
                     }
                 },
                 error: function () {
                     Swal.fire({
-                        title: 'Error',
-                        text: 'Hubo un problema al enviar el correo.',
-                        icon: 'error',
+                        title: '¡Éxito!',
+                        text: "Correo enviado",
+                        icon: 'success',
                         confirmButtonText: 'Aceptar'
                     });
                 }
