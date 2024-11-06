@@ -454,6 +454,18 @@
         const comentarios = $('#comentarios').val();
 
         // Validar que todos los campos estén llenos
+
+        if (precio === 'Precio: No disponible' || precio === '0$') {
+            Swal.fire({
+                title: 'Error',
+                text: 'La tarifa no está disponible, por favor selecciona otro día.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+            return;
+
+        }
+
         if (!nombre || !apellidos || !telefono || !correo || !precio || !trayecto || !vehiculo || !dia || !politicas) {
             Swal.fire({
                 title: 'Error',
