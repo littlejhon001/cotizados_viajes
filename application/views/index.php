@@ -221,9 +221,9 @@
                                 <label for="correo" class="form-label">Correo</label>
                                 <input type="email" class="form-control" id="correo" name="correo" required>
                             </div>
-                            <div class="mb-3">
-                                <input type="checkbox" name="" class="form-check-input" id="more-info">
-                                <label for="" class="form-check-label text-primary">
+                            <div class="mb-3 px-3 bg-secondary rounded-1">
+                                <input type="checkbox" name="" class="form-check-input" id="more-info" style="border:gray;">
+                                <label for="" class="form-check-label text-white">
                                     <strong>
                                         Deseas agregar mas información a tu cotización
                                     </strong>
