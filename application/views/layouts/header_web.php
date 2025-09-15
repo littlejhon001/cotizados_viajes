@@ -17,7 +17,7 @@
     <meta name="Author Email" content="aprendizgti@ccs.org.co" />
     <meta name="DC.creator" content="David Parra" />
     <meta name="DC.language" content="ES" />
-    <link rel="shortcut icon" type="image/png" href="<?php echo IP_SERVER ?>assets/img/event_on.png" />
+    <link rel="shortcut icon" type="image/png" href="<?php echo IP_SERVER ?>assets/img/logo_transdorado.png" />
 
     <!-- splashscreen pwa -->
     <link rel="apple-touch-startup-image"

@@ -31,7 +31,7 @@
 
     .portada .header .logotipo {
         font-size: 50px;
-        font-size: 900;
+        font-weight: 900;
         margin-bottom: 20px;
     }
 
@@ -107,8 +107,6 @@
     <video id="miVideo" class="miVideo" src="<?php echo IP_SERVER ?>assets/img/video_colombia.mp4" autoplay loop muted>
     </video>
 </div>
-
-</div>
 <div class="container-fluid p-5  img-fondo bg-glass p-4" id="cotizacion">
     <div class="container bg-glass p-4">
         <div class="row   rounded-2 py-4 ">
@@ -154,7 +152,7 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-        <div class="container pb-4 ">
+        <div class=" pb-4 ">
             <div class="row">
                 <div class="col-md-6 col-12">
 
@@ -184,7 +182,7 @@
                         <div class="card-footer border-0 ">
                             <div class="d-flex justify-content-end  flex-column flex-md-row">
                                 <button
-                                    class="btn btn-primary mb-2 mb-md-0 d-none animate__animated animate__fadeInLeft "
+                                    class="btn btn-primary mb-2 mb-md-0 d-none animate__animated animate__pulse animate__infinite "
                                     id="enviar_correo1">
                                     Enviar esta cotización a mi
                                     correo
@@ -206,8 +204,8 @@
                         </h2>
                         <form id="formCotizacion" action="<?php echo IP_SERVER ?>home/imprimir" method="POST">
                             <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                <label for="nombre" class="form-label" >Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required maxlength="20">
                             </div>
                             <div class="mb-3">
                                 <label for="apellidos" class="form-label">Apellidos</label>
@@ -222,8 +220,8 @@
                                 <input type="email" class="form-control" id="correo" name="correo" required>
                             </div>
                             <div class="mb-3 px-3 bg-secondary rounded-1">
-                                <input type="checkbox" name="" class="form-check-input" id="more-info" style="border:gray;">
-                                <label for="" class="form-check-label text-white">
+                                <input type="checkbox" name="more_info" class="form-check-input" id="more-info" style="border:gray;">
+                                <label for="more-info" class="form-check-label text-white">
                                     <strong>
                                         Deseas agregar mas información a tu cotización
                                     </strong>
@@ -244,18 +242,18 @@
                                         </div>
                                         <div class="col-12 col-md-3  d-flex align-items-center">
                                             <div class="form-check">
-                                                <label class="form-check-label" for="flexCheckDefault">
+                                                <label class="form-check-label" for="mascotas">
                                                     Mascotas ?
                                                 </label>
-                                                <input class="form-check-input" type="checkbox" value="0" id="mascotas">
+                                                <input class="form-check-input" type="checkbox" value="0" id="mascotas" name="mascotas">
                                             </div>
                                         </div>
                                         <div class="col-12 mt-3 ">
                                             <div class="form-floating">
                                                 <textarea class="form-control" placeholder="Comentarios"
-                                                    id="comentarios" id="floatingTextarea2"
+                                                    id="comentarios" name="comentarios"
                                                     style="height: 100%"></textarea>
-                                                <label for="floatingTextarea2">Comentarios</label>
+                                                <label for="comentarios">Comentarios</label>
                                             </div>
                                         </div>
                                     </div>
@@ -265,17 +263,22 @@
                                 <input class="form-check-input" type="checkbox" id="politicas" name="politicas"
                                     required>
                                 <label class="form-check-label" for="politicas">
-                                    Acepto políticas de privacidad <a href="http://">Política de privacidad</a>
+                                    Acepto políticas de privacidad <a href="#" onclick="alert('Política de privacidad no configurada')">Política de privacidad</a>
                                 </label>
                             </div>
                             <input type="hidden" id="trayecto_impresion" name="trayecto">
                             <input type="hidden" id="vehiculo_impresion" name="vehiculo">
                             <input type="hidden" id="dia_impresion" name="dia">
                             <input type="hidden" id="precio_impresion" name="precio">
+                            <input type="hidden" id="direccion_impresion" name="direccion">
+                            <input type="hidden" id="hora_impresion" name="hora">
+                            <input type="hidden" id="mascotas_impresion" name="mascotas">
+                            <input type="hidden" id="comentarios_impresion" name="comentarios">
+                            <input type="hidden" id="more_info_impresion" name="more_info">
                             <div class="d-flex flex-column flex-md-row">
                                 <button class=" btn btn-primary enviar_cotizacion mb-2 mb-md-0 ">Enviar
                                     cotización</button>
-                                <button id="" class="ms-3  btn  btn-outline-danger" type="submit">
+                                <button id="imprimir_pdf" class="ms-3  btn  btn-outline-danger" type="submit">
                                     imprimir
                                     <i class="bi bi-printer"></i>
                                 </button>
@@ -543,6 +546,20 @@
 <script>
     $('#trayecto').select2({
         placeholder: 'Select an option'
+    });
+</script>
+
+<script>
+    // Populate hidden fields before PDF form submission
+    $('#imprimir_pdf').on('click', function(e) {
+        // Populate all hidden fields with current values
+        $('#direccion_impresion').val($('#direccion').val());
+        $('#hora_impresion').val($('#hora').val());
+        $('#mascotas_impresion').val($('#mascotas').is(':checked') ? '1' : '0');
+        $('#comentarios_impresion').val($('#comentarios').val());
+        $('#more_info_impresion').val($('#more-info').is(':checked') ? '1' : '0');
+        
+        // The form will submit normally after populating hidden fields
     });
 </script>
 

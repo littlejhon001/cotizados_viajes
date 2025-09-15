@@ -179,6 +179,14 @@ class Home extends CI_Controller
         $vehiculo = $this->input->post('vehiculo');
         $dia = $this->input->post('dia');
         $politicas = $this->input->post('politicas') === 'true' || $this->input->post('politicas') === 'on' ? 1 : 0;
+        
+        // Campos adicionales
+        $direccion = $this->input->post('direccion');
+        $hora = $this->input->post('hora');
+        $mascotas = $this->input->post('mascotas') === 'true' || $this->input->post('mascotas') === 'on' || $this->input->post('mascotas') === '1' ? 1 : 0;
+        $comentarios = $this->input->post('comentarios');
+        $more_info = $this->input->post('more_info') === 'true' || $this->input->post('more_info') === 'on' || $this->input->post('more_info') === '1' ? 1 : 0;
+        
         $created_at = date('Y-m-d H:i:s');
 
         // Datos que se pasarán a la vista
@@ -192,6 +200,11 @@ class Home extends CI_Controller
             'vehiculo' => $vehiculo,
             'dia' => $dia,
             'politica' => $politicas,
+            'direccion' => $direccion,
+            'hora' => $hora,
+            'mascota' => $mascotas,
+            'comentarios' => $comentarios,
+            'more_info' => $more_info,
             'created_at' => $created_at
         );
         $this->Usuarios_model->insert($data);
@@ -321,6 +334,7 @@ class Home extends CI_Controller
             echo json_encode(['status' => 'error', 'message' => 'No se pudieron guardar los precios']);
         }
     }
+    
 
 
 }

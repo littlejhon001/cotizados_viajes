@@ -70,35 +70,56 @@
                     <div class="card bg-negro-tercero card_eventos border p-2">
                         <div class="">
                             <div>
-                                <h3 class="text-white ">Todos los usuarios:</h3>
+                                <h3 class="text-white ">Historial de usuarios</h3>
                             </div>
                         </div>
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="cotizacionesTable" style="width: auto;">
                             <thead>
                                 <tr>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Apellido</th>
                                     <th scope="col">Teléfono</th>
-                                    <th scope="col">correo</th>
+                                    <th scope="col">Correo</th>
                                     <th scope="col">Destino</th>
                                     <th scope="col">Precio</th>
-                                    <th scope="col">vehículo</th>
-                                    <th scope="col">dia</th>
-                                    <th scope="col">fecha</th>
+                                    <th scope="col">Vehículo</th>
+                                    <th scope="col">Día</th>
+                                    <th scope="col">Dirección</th>
+                                    <th scope="col">Hora</th>
+                                    <th scope="col">Mascotas</th>
+                                    <th scope="col">Comentarios</th>
+                                    <th scope="col">Fecha</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($usuarios as $cotizaciones) { ?>
                                     <tr>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->nombre; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->apellido; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->telefono; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->correo; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->trayecto; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->precio; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->vehiculo; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->dia; ?></th>
-                                        <th scope="col" class="text-white"><?php echo $cotizaciones->created_at; ?></th>
+                                        <td class="text-white" colspan="1"><?php echo $cotizaciones->nombre; ?></td>
+                                        <td class="text-white"><?php echo $cotizaciones->apellido; ?></td>
+                                        <td class="text-white"><?php echo $cotizaciones->telefono; ?></td>
+                                        <td class="text-white"><?php echo $cotizaciones->correo; ?></td>
+                                        <td class="text-white"><?php echo $cotizaciones->trayecto; ?></td>
+                                        <td class="text-white"><?php echo $cotizaciones->precio; ?></td>
+                                        <td class="text-white"><?php echo $cotizaciones->vehiculo; ?></td>
+                                        <td class="text-white"><?php echo $cotizaciones->dia; ?> día(s)</td>
+                                        <td class="text-white"><?php echo !empty($cotizaciones->direccion) ? $cotizaciones->direccion : '-'; ?></td>
+                                        <td class="text-white"><?php echo !empty($cotizaciones->hora) ? $cotizaciones->hora : '-'; ?></td>
+                                        <td class="text-white">
+                                            <?php echo (!empty($cotizaciones->mascota) && $cotizaciones->mascota == 1) ? '<span class="badge bg-success">Sí</span>' : '<span class="badge bg-secondary">No</span>'; ?>
+                                        </td>
+                                        <td class="text-white">
+                                            <?php 
+                                            if (!empty($cotizaciones->comentarios)) {
+                                                $comentarios = strlen($cotizaciones->comentarios) > 30 ? 
+                                                    substr($cotizaciones->comentarios, 0, 30) . '...' : 
+                                                    $cotizaciones->comentarios;
+                                                echo '<span title="' . htmlspecialchars($cotizaciones->comentarios) . '">' . htmlspecialchars($comentarios) . '</span>';
+                                            } else {
+                                                echo '-';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td class="text-white"><?php echo $cotizaciones->created_at; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -111,79 +132,85 @@
         </div>
         </div>
     </main>
-    <div class="modal fade" id="modal_evento" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content bg-dark">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-white titulo_modal" id="staticBackdropLabel">Crear nuevo evento
-                    </h1>
-                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-evento" action="<?php echo IP_SERVER; ?>home/crear_evento">
-                        <input type="hidden" id="id_evento">
-
-                        <div class="form-group">
-                            <label for="nombre">Nombre del Evento</label>
-                            <input type="text" class="form-control" id="nombre"
-                                placeholder="Ingrese el nombre del evento" name="nombre">
-                        </div>
-                        <div class="form-group">
-                            <label for="ubicacion">Ubicación</label>
-                            <input type="text" class="form-control" id="ubicacion"
-                                placeholder="Ingrese la ubicación del evento" name="ubicacion">
-                        </div>
-                        <div class="form-group">
-                            <label for="estado">Estado</label>
-                            <select class="form-control" id="estado" name="">
-                                <option value="activo">Activo</option>
-                                <option value="cancelado">Cancelado</option>
-                                <option value="pospuesto">Pospuesto</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="artista">Artista</label>
-                            <input type="text" class="form-control" id="artista"
-                                placeholder="Ingrese el nombre del artista" name="artista">
-                        </div>
-                        <div class="form-group">
-                            <label for="capacidad">Capacidad</label>
-                            <input type="number" class="form-control" id="capacidad"
-                                placeholder="Ingrese la capacidad del evento" name="capacidad">
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcion">Descripción</label>
-                            <textarea class="form-control" id="descripcion" rows="3"
-                                placeholder="Ingrese una descripción del evento" name="descripcion">
-
-                            </textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="escenario">Escenario</label>
-                            <input type="text" class="form-control" id="escenario"
-                                placeholder="Ingrese el escenario del evento" name="escenario">
-                        </div>
-                        <div class="form-group">
-                            <label for="escenario">ulr imagen banner</label>
-                            <input type="text" class="form-control" id="ulr_imagen"
-                                placeholder="ingrese la ruta del banner" name="ulr_imagen">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer text-white">
-                    <button type="button" class="btn btn-primary" id="guardar">Guardar evento</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
     </div>
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#cotizacionesTable').DataTable({
+        responsive: true,
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay datos disponibles en la tabla",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "No se encontraron registros coincidentes",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+            "aria": {
+                "sortAscending": ": activar para ordenar la columna ascendente",
+                "sortDescending": ": activar para ordenar la columna descendente"
+            }
+        },
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'csv',
+                text: 'CSV',
+                className: 'btn btn-success btn-sm'
+            },
+            {
+                extend: 'excel',
+                text: 'Excel',
+                className: 'btn btn-success btn-sm'
+            },
+        ],
+        pageLength: 10,
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
+        order: [[12, 'desc']], // Ordenar por fecha (columna 12) descendente
+        columnDefs: [
+            { responsivePriority: 1, targets: [0, 1, 4, 5, 12] }, // Nombre, Apellido, Destino, Precio, Fecha
+            { responsivePriority: 2, targets: [2, 3] }, // Teléfono, Correo
+            { responsivePriority: 3, targets: [6, 7] }, // Vehículo, Día
+            { responsivePriority: 10000, targets: [8, 9, 10, 11] } // Campos adicionales (se ocultan primero)
+        ]
+    });
+});
+</script>
 
 <script>
 

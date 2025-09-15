@@ -81,13 +81,15 @@
                 <td colspan="3">
                     <table>
                         <tr>
-                            <td class="title">
-                                <h3>Cotización de Viaje</h3>
+                            <td>
+                                <img src="<?php echo IP_SERVER; ?>assets/img/logo_transdorado.png"
+                                    style="width:100%; max-width:150px;" alt="Logo Transdorado">
                             </td>
-
+                            <td class="">
+                                <h5>Cotización de Viaje</h5>
+                            </td>
                             <td>
                                 Fecha: <?php echo date('d/m/Y'); ?><br>
-                                <!-- Cotización #: <?php  //echo $cotizacion_id; ?> -->
                             </td>
                         </tr>
 
@@ -134,6 +136,34 @@
                 <td>Total: <?php echo $precio; ?></td>
             </tr>
         </table>
+
+        <!-- Información Adicional -->
+        <?php if (!empty($direccion) || !empty($hora) || !empty($mascota) || !empty($comentarios)): ?>
+        <div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+            <h3 style="color: #333; margin-bottom: 15px; border-bottom: 2px solid #007bff; padding-bottom: 10px;">Información Adicional del Servicio</h3>
+            
+            <?php if (!empty($direccion)): ?>
+            <p style="margin-bottom: 10px;"><strong>📍 Dirección de recogida:</strong> <?php echo $direccion; ?></p>
+            <?php endif; ?>
+            
+            <?php if (!empty($hora)): ?>
+            <p style="margin-bottom: 10px;"><strong>🕒 Hora de recogida:</strong> <?php echo $hora; ?></p>
+            <?php endif; ?>
+            
+            <?php if (!empty($mascota) && $mascota == 1): ?>
+            <p style="margin-bottom: 10px;"><strong>🐾 Mascotas:</strong> Sí, el cliente viajará con mascotas</p>
+            <?php endif; ?>
+            
+            <?php if (!empty($comentarios)): ?>
+            <div style="margin-top: 15px;">
+                <p style="margin-bottom: 5px;"><strong>💬 Comentarios adicionales:</strong></p>
+                <div style="background-color: white; padding: 15px; border-left: 4px solid #007bff; margin-top: 5px; font-style: italic;">
+                    <?php echo nl2br(htmlspecialchars($comentarios)); ?>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
     </div>
 
     <div>
@@ -156,7 +186,7 @@
             <br>
 
             B.
-            Vansbogota.com será responsable de proveer conductores, insumos, equipos, herramientas, materiales,
+            Transdorado será responsable de proveer conductores, insumos, equipos, herramientas, materiales,
             combustibles, lubricantes y cualquier otro elemento necesario para la operación normal del vehículo y la
             prestación del servicio. Además, asumirá todos los costos relacionados con el mantenimiento del vehículo y
             las infracciones de tránsito que pudieran ocurrir. La empresa también dispondrá de conductores idóneos,
@@ -184,17 +214,23 @@
         </p>
         <p>Atento a sus comentarios.</p>
         <p>Cordialmente:</p>
-        <img src="<?php echo IP_SERVER; ?>assets/img/firma.png" alt="firma" width="180px">
+        <img src="https://www.transdorado.co/cotizador_viajes/assets/img/firma.png" alt="firma" width="180px">
         <p>ROGER STEVEN ESPEJO <br>
             Cargo: Gerente General <br>
         </p>
     </div>
-    </div>
     <footer>
-        <div class="container-fluid">
-            <p>
-                <a href="https://www.transdorado.co/" target="_blank">Transdorado</a> - Todos los derechos reservados
-                <?php echo date('Y'); ?>
+        <div class="container-fluid " style="text-align: center;">
+            <p>GRUPO GREMS SAS
+                NIT 901.867.890-9
+                Dirección: CRA 9 este 1A 56 📍
+                <br>
+                <a href="https://wa.me/573115966555">WhatsApp</a>
+                <br>
+                📱 Tel: 3115966555-3213130355
+            </p>
+            <p><a href="https://www.transdorado.co/" target="_blank">Transdorado</a> - Todos los derechos reservados
+            <?php echo date('Y'); ?>
             </p>
         </div>
     </footer>

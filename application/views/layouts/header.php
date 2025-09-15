@@ -18,8 +18,8 @@
     <meta name="DC.date" content="2020-04-22 010:00:00 AM" />
     <meta name="DC.language" content="ES" />
 
-    <link rel="shortcut icon" href="<?php echo IP_SERVER ?>assets/img/event_on.png" title="CCS" id="CCS"
-        type="image/x-icon" />
+     <link rel="shortcut icon" type="image/png" href="<?php echo IP_SERVER ?>assets/img/logo_transdorado.png" />
+
 
     <link href="<?php echo IP_SERVER ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo IP_SERVER ?>assets/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
