@@ -7,6 +7,19 @@ class Home extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        
+        // Configurar headers CORS para permitir peticiones cross-origin
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+        header('Access-Control-Allow-Credentials: true');
+        
+        // Manejar peticiones OPTIONS (preflight)
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            http_response_code(200);
+            exit();
+        }
+        
         // if (!$this->validatoken()) {
         //     $this->iffalse('Acceso denegado');
         //     $this->json();
@@ -50,6 +63,10 @@ class Home extends CI_Controller
     }
     public function get_tarifa()
     {
+        // Asegurar headers CORS y Content-Type
+        header('Access-Control-Allow-Origin: *');
+        header('Content-Type: application/json; charset=utf-8');
+        
         $id_destino = $this->input->post('id_destino');
         $id_vehiculo = $this->input->post('id_vehiculo');
         $dia = $this->input->post('dia');
@@ -96,6 +113,10 @@ class Home extends CI_Controller
 
     public function enviar_cotizacion()
     {
+        // Asegurar headers CORS y Content-Type
+        header('Access-Control-Allow-Origin: *');
+        header('Content-Type: application/json; charset=utf-8');
+        
         // Obtener los datos del formulario
         $correo = $this->input->post('correo');
         $nombre = $this->input->post('nombre');

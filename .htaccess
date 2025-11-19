@@ -1,4 +1,18 @@
 RewriteEngine On
+
+# Forzar WWW para evitar problemas de CORS
+RewriteCond %{HTTP_HOST} ^transdorado\.co [NC]
+RewriteRule ^(.*)$ https://www.transdorado.co/cotizador_viajes/$1 [R=301,L]
+
+# Headers CORS
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+    Header set Access-Control-Allow-Credentials "true"
+</IfModule>
+
+# Reescritura de URL para CodeIgniter
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L]
