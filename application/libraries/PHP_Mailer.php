@@ -51,6 +51,21 @@ class Php_mailer {
 						$mail->addBcc($correo->addbcc);
 					}
 				}
+				// Adjuntar archivos si existen
+				if (!empty($correo->attachment)) {
+					if (is_array($correo->attachment)) {
+						foreach ($correo->attachment as $file) {
+							if (isset($file['path']) && file_exists($file['path'])) {
+								$filename = isset($file['name']) ? $file['name'] : basename($file['path']);
+								$mail->addAttachment($file['path'], $filename);
+							}
+						}
+					} else {
+						if (file_exists($correo->attachment)) {
+							$mail->addAttachment($correo->attachment);
+						}
+					}
+				}
 				$mail->Body = empty($correo->body) ? 'Cotización' : $correo->body;
 				if ($mail->send()) {
 					$return->success = 1;

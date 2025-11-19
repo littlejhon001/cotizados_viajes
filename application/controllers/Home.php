@@ -138,17 +138,44 @@ class Home extends CI_Controller
         // Cargar la vista y obtener el contenido HTML como un string
         $html = $this->load->view('mails/_cotizacion', $data, true);
         $this->Usuarios_model->insert($data);
+        
+        // Generar el PDF
+        $this->load->library('dompdf_gen');
+        $html_pdf = $this->load->view('pdf/cotizacion', $data, true);
+        $pdf_content = $this->dompdf_gen->generate($html_pdf, "cotizacion_" . date('Y-m-d_H-i-s') . ".pdf", false, 'A4', 'landscape');
+        
+        // Guardar temporalmente el PDF
+        $temp_pdf_path = FCPATH . 'temp/cotizacion_' . uniqid() . '.pdf';
+        
+        // Crear directorio temp si no existe
+        if (!is_dir(FCPATH . 'temp')) {
+            mkdir(FCPATH . 'temp', 0755, true);
+        }
+        
+        file_put_contents($temp_pdf_path, $pdf_content);
+        
         // Crear un objeto para pasar al php_mailer con el destinatario y el contenido
-        $correo = (object) array(
-            'email' => $correo, // Cambié 'to' a 'email' porque en tu función 'enviarcorreo' espera 'email'
+        $correo_obj = (object) array(
+            'email' => $correo,
             'subject' => 'Cotización Transdorado',
-            'body' => $html, // Asegúrate que el campo sea 'body', ya que es lo que espera la función 'enviarcorreo'
-            'addbcc' => 'cotizaciones@transdorado.co'
+            'body' => $html,
+            'addbcc' => 'cotizaciones@transdorado.co',
+            'attachment' => array(
+                array(
+                    'path' => $temp_pdf_path,
+                    'name' => 'Cotizacion_Transdorado_' . date('Y-m-d') . '.pdf'
+                )
+            )
         );
 
         // Cargar la librería php_mailer y enviar el correo
         $this->load->library('Php_mailer', null, 'Php_mailer');
-        $respuesta = $this->Php_mailer->enviarcorreo($correo);
+        $respuesta = $this->Php_mailer->enviarcorreo($correo_obj);
+        
+        // Eliminar el archivo temporal después de enviar el correo
+        if (file_exists($temp_pdf_path)) {
+            unlink($temp_pdf_path);
+        }
         // emulacion de respuesta
         // $respuesta = (object) array (
         //     'success' => true,
@@ -158,10 +185,10 @@ class Home extends CI_Controller
         // Verificar si el correo fue enviado exitosamente
         if ($respuesta->success) {
             // Retorna un mensaje JSON indicando éxito
-            echo json_encode(['status' => 'success', 'message' => 'La cotización de tu viaje se ha enviado correctamente.']);
+            echo json_encode(['status' => 'success', 'message' => 'La cotización de tu viaje se ha enviado correctamente con el PDF adjunto.']);
         } else {
             // Retorna un mensaje JSON indicando error
-            echo json_encode(['status' => 'error', 'message' => 'La cotización de tu viaje se ha enviado correctamente. ' . $respuesta->error]);
+            echo json_encode(['status' => 'error', 'message' => 'Hubo un error al enviar la cotización. Por favor, intenta nuevamente. ' . $respuesta->error]);
         }
     }
 
