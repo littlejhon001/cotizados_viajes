@@ -1,5 +1,5 @@
 </div class="h-25">
-<div class="container-fluid bg-dark text-white text-center p-3">
+<!-- <div class="container-fluid bg-dark text-white text-center p-3">
     <p id="footer-text"></p>
     <p>GRUPO GREMS SAS
         NIT 901.867.890-9
@@ -9,7 +9,7 @@
         <br>
         📱 Tel: 3115966555-3213130355
     </p>
-</div>
+</div> -->
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

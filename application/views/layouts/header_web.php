@@ -220,7 +220,7 @@
 </head>
 
 
-<header id="inicio">
+<!-- <header id="inicio">
     <nav class="navbar navbar-expand-lg" id="miNavBar" data-aos="fade-down" data-aos-duration="1500">
         <div class="container-fluid">
             <a class="navbar-brand " href="index.html" id="logo">
@@ -245,7 +245,7 @@
             </div>
         </div>
     </nav>
-</header>
+</header> -->
 
 
 
