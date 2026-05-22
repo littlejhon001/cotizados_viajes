@@ -29,6 +29,7 @@
     body {
         font-family: 'Manrope', sans-serif;
         color: var(--ink-900);
+   
     }
 
 
@@ -571,21 +572,21 @@
     </div>
 </div>
 
-<div id="install-banner" class="animate__animated animate__fadeInLeft text-center">
+<!-- <div id="install-banner" class="animate__animated animate__fadeInLeft text-center">
     <span>Instala nuestra aplicación para una mejor experiencia.</span>
     <div>
         <button onclick="installPWA()">Instalar</button>
         <button class="bg-danger" onclick="cerrar()">No gracias</button>
     </div>
-</div>
+</div> -->
 
-<div class="btn-whatsapp animate__animated animate__fadeInUp ">
+<!-- <div class="btn-whatsapp animate__animated animate__fadeInUp ">
     <a href="#" target="_blank">
         <lord-icon src="https://cdn.lordicon.com/fjuachvi.json" trigger="hover" style="width:40px;height:40px">
         </lord-icon>
         <span class="tooltip">Contáctame</span>
     </a>
-</div>
+</div> -->
 
 <!-- <script>
     $('#imprimir_cot').on('click', function (e) {
