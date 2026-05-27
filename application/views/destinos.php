@@ -517,6 +517,21 @@ if (!empty($destinos)) {
 
 		<div class="row g-4 px-3 px-lg-4 pb-4 pb-lg-5 pt-2">
 			<div class="col-lg-8">
+				<div class="info-panel animate__animated animate__fadeInLeft mb-4">
+					<span class="section-label d-inline-flex mb-3"><i class="bi bi-stars"></i> Rutas frecuentes</span>
+					<h2 class="section-title">Rutas frecuentes desde Bogotá</h2>
+					<p class="section-lead">Estas rutas son las mas consultadas. Si deseas una cotizacion rapida, pasa al cotizador.</p>
+					<ul class="list-check">
+						<li><i class="bi bi-check-circle-fill"></i><span>Bogotá - Zipaquirá</span></li>
+						<li><i class="bi bi-check-circle-fill"></i><span>Bogotá - Guatavita</span></li>
+						<li><i class="bi bi-check-circle-fill"></i><span>Bogotá - Andrés Carne de Res Chía</span></li>
+						<li><i class="bi bi-check-circle-fill"></i><span>Bogotá - Villa de Leiva</span></li>
+					</ul>
+					<a class="btn-cotizar" href="<?php echo IP_SERVER; ?>#cotizacion">
+						<i class="bi bi-calculator-fill"></i>
+						Cotizar estas rutas
+					</a>
+				</div>
 				<div class="info-panel animate__animated animate__fadeInLeft">
 					<span class="section-label d-inline-flex mb-3"><i class="bi bi-signpost-split-fill"></i> Destinos disponibles</span>
 					<h2 class="section-title">Destinos destacados para cotizar tu viaje</h2>
