@@ -47,6 +47,58 @@ class Home extends CI_Controller
         $this->load->view('index', $data);
         $this->load->view('layouts/footer');
     }
+
+    public function destinos()
+    {
+        // Obtener todos los destinos y vehículos
+        $destinos = $this->Destinos_model->findAll();
+        $vehiculos = $this->Vehiculos_model->findAll();
+
+        $data['vehiculos'] = $vehiculos;
+        $data['destinos'] = [];
+
+        // Filtrar: mostrar solo destinos seleccionados (ej. Bogotá y Aeropuerto)
+        $allowed_keywords = array('bogota', 'bogotá', 'aeropuerto');
+
+        foreach ($destinos as $destino) {
+            $name_lower = mb_strtolower(trim($destino->destino), 'UTF-8');
+            $match = false;
+            foreach ($allowed_keywords as $kw) {
+                if (strpos($name_lower, $kw) !== false) {
+                    $match = true;
+                    break;
+                }
+            }
+            if (!$match) {
+                continue; // ignorar destinos que no coinciden
+            }
+
+            $precios = $this->Precios_model->get_precios_por_destino($destino->id);
+            $tarifas = array();
+
+            foreach ($precios as $dia => $vehiculosTarifa) {
+                foreach ($vehiculosTarifa as $idVehiculo => $tarifa) {
+                    $tarifas[] = (object) array(
+                        'dia' => $dia,
+                        'id_vehiculo' => $idVehiculo,
+                        'tarifa' => $tarifa,
+                    );
+                }
+            }
+
+            $data['destinos'][] = (object) array(
+                'id' => $destino->id,
+                'destino' => $destino->destino,
+                'precios' => $precios,
+                'tarifas' => $tarifas,
+                'tarifas_count' => count($tarifas),
+            );
+        }
+
+        $this->load->view('layouts/header_web');
+        $this->load->view('destinos', $data);
+        $this->load->view('layouts/footer');
+    }
     public function admin()
     {
         $data['destinos'] = $this->Destinos_model->findAll();
@@ -108,6 +160,13 @@ class Home extends CI_Controller
         $data['eventos'] = $this->Evento_model->findAll();
         $this->load->view('layouts/header_web');
         $this->load->view('index', $data);
+        $this->load->view('layouts/footer');
+    }
+
+    public function contacto()
+    {
+        $this->load->view('layouts/header_web');
+        $this->load->view('contacto');
         $this->load->view('layouts/footer');
     }
 

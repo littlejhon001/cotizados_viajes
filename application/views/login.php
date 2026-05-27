@@ -51,7 +51,7 @@
                                 <button type="submit"
                                     class="btn btn-primary btn-block text-uppercase my-2 rounded-pill w-100 shadow-sm btn-bg btn-login">Ingresar</button>
                                 <div class="text-center d-flex justify-content-center mt-2 text-white">
-                                    <p class="">¿Olvidaste tu contraseña? <a href="" class=" ">
+                                    <p class="">¿Olvidaste tu contraseña? <a href="<?php echo IP_SERVER; ?>contacto" class=" ">
                                             <u>Contacto</u></a></p>
                                 </div>
                             </form>

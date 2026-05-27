@@ -239,7 +239,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
+                        <a class="nav-link" href="<?php echo IP_SERVER; ?>contacto">Contacto</a>
                     </li>
                 </ul>
             </div>
