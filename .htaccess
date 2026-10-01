@@ -1,5 +1,11 @@
 RewriteEngine On
 
+# Bloquea archivos ocultos y de configuración (.env, .git, etc.)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
 # Forzar WWW para evitar problemas de CORS
 RewriteCond %{HTTP_HOST} ^transdorado\.co [NC]
 RewriteRule ^(.*)$ https://www.transdorado.co/cotizador_viajes/$1 [R=301,L]

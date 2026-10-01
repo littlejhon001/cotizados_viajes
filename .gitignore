@@ -34,3 +34,15 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 system/ccs
 system/ccs/ci_*
 log-*
+
+# Secretos y credenciales (Política CCS)
+.env
+.env.*
+!.env.example
+credentials/
+*.pem
+*.json
+!composer.json
+
+# Caché de métricas de fuentes que genera Dompdf
+application/third_party/dompdf/lib/fonts/*.ufm.php
