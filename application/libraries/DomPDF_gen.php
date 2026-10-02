@@ -8,7 +8,8 @@ class DomPDF_gen {
 
     public function generate($html, $filename = '', $stream = TRUE, $paper = 'letter', $orientation = "portrait" ) {
         $dompdf = new Dompdf();
-        $dompdf->set_option('isRemoteEnabled', true);
+        // Sin recursos remotos: evita SSRF y la carga de fuentes/CSS externos (CVE-2022-28368). Las imágenes van como data URI
+        $dompdf->set_option('isRemoteEnabled', false);
         $dompdf->set_option('isHtml5ParserEnabled', true); // Enable HTML5 parser
 
         $dompdf->loadHtml($html);

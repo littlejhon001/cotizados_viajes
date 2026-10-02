@@ -1,0 +1,47 @@
+/* Nota de Transparencia: Código generado/refactorizado con asistencia de IA Generativa (Claude Code) bajo la Política ODTI012 del CCS. Requiere supervisión y validación humana permanente. */
+
+/* Tokens compartidos por login y admin. Colores tomados del logo de Transportes Dorado */
+:root {
+    --td-green: #7AB51D;
+    --td-orange: #F39200;
+    --td-navy: #1B2A78;
+    --td-teal: #0E6B70;
+    --td-blue: #1E9FE0;
+
+    --td-ink: #16213A;
+    --td-muted: #5B6478;
+    --td-line: #D9DEE7;
+    --td-surface: #FFFFFF;
+    --td-page: #F4F6FA;
+    --td-sidebar: #131D52;
+
+    --td-success: #2E7D32;
+    --td-success-bg: #E8F5E9;
+    --td-warning: #B35C00;
+    --td-warning-bg: #FFF3E0;
+    --td-danger: #C62828;
+    --td-danger-bg: #FDECEC;
+
+    --td-primary: var(--td-teal);
+    --td-primary-hover: #0B5559;
+    --td-focus: rgba(30, 159, 224, .35);
+
+    --td-radius: 12px;
+    --td-radius-sm: 8px;
+    --td-shadow: 0 1px 2px rgba(22, 33, 58, .06), 0 4px 16px rgba(22, 33, 58, .06);
+    --td-font: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Franja con los cinco colores del logo */
+.brand-stripe {
+    display: flex;
+    height: 5px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.brand-stripe span { flex: 1; }
+.brand-stripe span:nth-child(1) { background: var(--td-green); }
+.brand-stripe span:nth-child(2) { background: var(--td-orange); }
+.brand-stripe span:nth-child(3) { background: var(--td-navy); }
+.brand-stripe span:nth-child(4) { background: var(--td-teal); }
+.brand-stripe span:nth-child(5) { background: var(--td-blue); }

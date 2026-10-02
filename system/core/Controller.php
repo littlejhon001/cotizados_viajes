@@ -121,11 +121,6 @@ class CI_Controller
 		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 		header('Content-type: application/json; text/json; charset=utf-8');
 		header("Cache-Control: private", false);
-		header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-		header('Access-Control-Request-Headers: Accept, X-Requested-With');
-		header('Access-Control-Allow-Credentials: true');
-		header("Access-Control-Allow-Headers: Content-Length, Accept-Encoding, Origin, X-Requested-With, Content-Type, Accept, token");
 		echo json_encode(empty($array) ? $this->reques : $array);
 	}
 	public function iffalse($msj = '')

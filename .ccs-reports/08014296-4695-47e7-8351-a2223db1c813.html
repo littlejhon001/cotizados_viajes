@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auditoría de commit 08014296-4695-47e7-8351-a2223db1c813</title>
+<style>
+:root{--ink:#16213A;--muted:#5B6478;--line:#D9DEE7;--ok:#2E7D32;--okbg:#E8F5E9;--bg:#F4F6FA;--accent:#0E6B70}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:960px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:1.7rem;margin:.2em 0 .6em} h2{font-size:1.15rem;margin:1.8em 0 .6em;color:var(--accent)}
+.badge{display:inline-block;padding:6px 14px;border-radius:999px;background:var(--okbg);color:var(--ok);font-weight:700}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:8px 0}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid #EEF1F5;vertical-align:top;font-size:.92rem}
+th{background:#FAFBFD;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+code{background:#EEF1F5;padding:1px 5px;border-radius:4px;font-size:.88em;word-break:break-all}
+pre{background:#16213A;color:#E8ECF5;padding:14px;border-radius:10px;overflow:auto;font-size:.85rem}
+.note{background:#fff;border-left:4px solid var(--accent);padding:10px 14px;border-radius:6px;color:var(--muted)}
+a{color:#1B2A78}
+</style></head><body><main>
+<p><span class="badge">VEREDICTO: APROBADO · CONFIANZA 82 %</span></p>
+<p class="note"><strong>Nota de Transparencia:</strong> Este documento fue generado con apoyo de Inteligencia Artificial Generativa (Claude Code) cumpliendo la Política ODTI012 del CCS.</p>
+<h1>Auditoría de intención del commit</h1>
+<table><thead><tr><th>Campo</th><th>Valor</th></tr></thead><tbody><tr><td><strong>report_id</strong></td><td><code>08014296-4695-47e7-8351-a2223db1c813</code></td></tr><tr><td><strong>Fecha (UTC)</strong></td><td>2026-10-02T15:28:04Z</td></tr><tr><td><strong>Rama</strong></td><td><code>feature/admin-rediseno-cotizacion-formal</code></td></tr><tr><td><strong>Commit base</strong></td><td><code>db30c9c</code></td></tr><tr><td><strong>diff_hash</strong> (staged, sin <code>.ccs-reports/</code>)</td><td><code>0aff849a12a19633318eafba3fe004202bff7b2ebb8c98ed0584c33c34756cad</code></td></tr><tr><td><strong>Ticket</strong></td><td>No se referenció ningún ticket; la validación se limita a la intención declarada</td></tr><tr><td><strong>Confianza</strong></td><td><strong>82 %</strong></td></tr><tr><td><strong>Veredicto</strong></td><td><strong>APROBADO</strong></td></tr></tbody></table>
+<h2>Mensaje de commit propuesto</h2>
+<pre>Cotizador público seguro, flujo en una pantalla y cotización unificada
+
+- Precio, destino y vehículo calculados en el servidor; validación de
+  entrada, campo trampa, límite por IP y CORS con lista de orígenes.
+- Dompdf sin recursos remotos y plantillas con salida escapada;
+  imprimir() sin var_dump y sin registros duplicados.
+- Cotizador público en una sola pantalla (endpoint Home/tarifas_destino).
+- PDF y correo únicos para la cotización pública y la formal: cláusulas
+  A–I, fecha por ítem, factura electrónica 7 %, hora adicional y firma.
+- Nuevo diseño del correo HTML de la cotización.</pre>
+<h2>Intención declarada</h2>
+<p>Endurecer el cotizador público (precio desde la BD, validación, honeypot, rate limit, CORS con lista, Dompdf sin recursos remotos y plantillas escapadas, <code>imprimir()</code> sin <code>var_dump</code> ni duplicados); rediseñar el flujo público en una sola pantalla (<code>Home/tarifas_destino</code>); unificar el PDF y el correo de la cotización pública y la formal con la cotización real (cláusulas A–I, fecha por ítem, factura electrónica 7 %, hora adicional, firma); rediseñar el correo HTML.</p>
+<h2>Archivos en staging</h2>
+<table><thead><tr><th>Archivo</th><th>+/−</th><th>¿Explicado por la intención?</th></tr></thead><tbody><tr><td><code>application/controllers/Home.php</code></td><td>+354 / −163</td><td>Sí: validación pública, rate limit, CORS, <code>tarifas_destino</code>, adaptador a la cotización formal, factura 7 %, hora adicional, datos de pago y firmante</td></tr><tr><td><code>application/views/index.php</code></td><td>+448 / −437</td><td>Sí: cotizador público en una sola pantalla</td></tr><tr><td><code>application/views/pdf/cotizacion_formal.php</code></td><td>+100 / −28</td><td>Sí: fusión con la cotización real (cláusulas A–I, fecha por ítem, factura, hora adicional, firma)</td></tr><tr><td><code>application/views/mails/_cotizacion_formal.php</code></td><td>+204 / −19</td><td>Sí: rediseño del correo HTML</td></tr><tr><td><code>application/views/admin/cotizacion_formal.php</code></td><td>+33 / −5</td><td>Sí: campos de introducción, fecha, factura y hora adicional</td></tr><tr><td><code>application/views/pdf/cotizacion.php</code>, <code>mails/_cotizacion.php</code></td><td>±12 / ±10</td><td>Sí: salida escapada e imágenes embebidas (plantillas anteriores)</td></tr><tr><td><code>application/libraries/DomPDF_gen.php</code></td><td>+2 / −1</td><td>Sí: <code>isRemoteEnabled = false</code></td></tr><tr><td><code>application/libraries/PHP_Mailer.php</code></td><td>+8</td><td>Sí: imágenes embebidas adicionales (firma)</td></tr><tr><td><code>application/core/Controller.php</code>, <code>system/core/Controller.php</code></td><td>−5 / −5</td><td>Sí: quita CORS <code>*</code> de <code>json()</code></td></tr><tr><td><code>.htaccess</code></td><td>+1 / −7</td><td>Sí: quita CORS <code>*</code> de Apache</td></tr><tr><td><code>.env.example</code></td><td>+8</td><td>Sí: <code>FIRMA_*</code>, <code>PAGO_*</code></td></tr><tr><td><code>assets/css/admin.css</code></td><td>+2</td><td>Sí: columna de fecha en el formulario</td></tr><tr><td><code>assets/img/firma_cotizacion.png</code></td><td>binario</td><td>Sí: firma recortada con fondo transparente</td></tr><tr><td><code>docs/ia-traceability/c10bc4d1-….md</code></td><td>+48</td><td>Sí: traza de la revisión previa</td></tr></tbody></table>
+<p><strong>Archivos no explicados:</strong> ninguno.</p>
+<h2>Hallazgos de alineación y riesgo</h2>
+<ol><li><strong>Alineación alta:</strong> cada punto declarado tiene un cambio correspondiente en el diff.</li><li><strong>Riesgo (medio): se modifica el núcleo de CodeIgniter.</strong> <code>system/core/Controller.php</code> es código del framework. El proyecto ya lo tenía modificado; se quitan 5 líneas de CORS. Una actualización del framework podría revertirlo.</li><li><strong>Riesgo (medio): CORS restringido.</strong> Si el sitio principal llama al cotizador desde un dominio distinto de <code>transdorado.co</code> o <code>www.transdorado.co</code>, esas llamadas dejarán de funcionar hasta configurar <code>ALLOWED_ORIGINS</code>.</li><li><strong>Riesgo (medio): cambio grande en la vista pública</strong> (<code>index.php</code>, ±885 líneas) sin pruebas automatizadas. Se verificó a mano: capturas de escritorio y móvil, envíos por <code>curl</code> y correo real enviado.</li><li><strong>Pendiente conocido (no declarado como alcance):</strong> Dompdf sigue en 1.0.2. Está mitigado con <code>isRemoteEnabled = false</code> y salida escapada, pero no se ha actualizado.</li><li><strong>Dependencia de configuración:</strong> el despliegue necesita <code>.env</code> con <code>SMTP_*</code> (y opcionalmente <code>FIRMA_*</code>, <code>PAGO_*</code>, <code>ALLOWED_ORIGINS</code>).</li><li><strong>No hay secretos en el diff:</strong> se revisó que no aparezca la contraseña SMTP ni <code>.env</code>. <code>application/config/constants.php</code> queda excluido a propósito.</li></ol>
+<h2>Trazabilidad previa</h2>
+<ul><li><a href="../docs/ia-traceability/c10bc4d1-d6cf-426d-a6a2-9e13c076f55e.md">docs/ia-traceability/c10bc4d1-d6cf-426d-a6a2-9e13c076f55e.md</a> (<code>web-fullstack-dev</code>): revisión de <code>Home.php</code>, <code>index.php</code> y las plantillas PDF y de correo. Su veredicto fue BLOQUEADO; este diff implementa los hallazgos 1, 2, 4, 5, 6, 7, 8 y 12. El hallazgo 3 (Dompdf) queda mitigado y pendiente.</li><li>No hay trazas de <code>/security-audit</code> ni <code>/code-standards-auditor</code> sobre este diff.</li></ul>
+<h2>Cálculo de la confianza</h2>
+<p>Se parte de 100 (diff alineado con la intención, sin archivos sin explicar y con una traza previa cuyos hallazgos se atienden) y se descuenta cada riesgo:</p>
+<table><thead><tr><th>Factor</th><th>Efecto</th></tr></thead><tbody><tr><td>Punto de partida</td><td>100</td></tr><tr><td>Sin pruebas automatizadas en un cambio grande de la vista pública (verificado solo a mano)</td><td>−6</td></tr><tr><td>Dompdf 1.0.2 sin actualizar (mitigado; fuera del alcance declarado)</td><td>−5</td></tr><tr><td>Riesgo operativo en producción: CORS restringido y <code>.env</code> obligatorio</td><td>−4</td></tr><tr><td>Edición del núcleo del framework (<code>system/core</code>, ya modificado antes en el proyecto)</td><td>−3</td></tr><tr><td><strong>Total</strong></td><td><strong>82 %</strong></td></tr></tbody></table>
+<p><strong>Veredicto: APROBADO (≥ 80 %).</strong></p>
+</main></body></html>

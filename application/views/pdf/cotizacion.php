@@ -82,7 +82,7 @@
                     <table>
                         <tr>
                             <td>
-                                <img src="<?php echo IP_SERVER; ?>assets/img/logo_transdorado.png"
+                                <img src="<?php echo $logo_src; ?>"
                                     style="width:100%; max-width:150px;" alt="Logo Transdorado">
                             </td>
                             <td class="">
@@ -109,10 +109,10 @@
                             </td>
                             <td>
                                 Cliente:<br>
-                                <?php echo $nombre; ?><br>
-                                <?php echo $apellido; ?><br>
-                                <?php echo $telefono; ?><br>
-                                <?php echo $correo; ?>
+                                <?php echo html_escape($nombre); ?><br>
+                                <?php echo html_escape($apellido); ?><br>
+                                <?php echo html_escape($telefono); ?><br>
+                                <?php echo html_escape($correo); ?>
                             </td>
                         </tr>
                     </table>
@@ -125,15 +125,15 @@
             </tr>
             <?php // foreach ($items as $item): ?>
             <tr class="item">
-                <td><?php echo $trayecto; ?></td>
-                <td><?php echo $dia; ?></td>
-                <td><?php echo $vehiculo; ?></td>
+                <td><?php echo html_escape($trayecto); ?></td>
+                <td><?php echo html_escape($dia); ?></td>
+                <td><?php echo html_escape($vehiculo); ?></td>
             </tr>
             <?php // endforeach; ?>
             <tr class="total">
                 <td></td>
                 <td></td>
-                <td>Total: <?php echo $precio; ?></td>
+                <td>Total: <?php echo html_escape($precio); ?></td>
             </tr>
         </table>
 
@@ -143,11 +143,11 @@
             <h3 style="color: #333; margin-bottom: 15px; border-bottom: 2px solid #007bff; padding-bottom: 10px;">Información Adicional del Servicio</h3>
             
             <?php if (!empty($direccion)): ?>
-            <p style="margin-bottom: 10px;"><strong>📍 Dirección de recogida:</strong> <?php echo $direccion; ?></p>
+            <p style="margin-bottom: 10px;"><strong>📍 Dirección de recogida:</strong> <?php echo html_escape($direccion); ?></p>
             <?php endif; ?>
             
             <?php if (!empty($hora)): ?>
-            <p style="margin-bottom: 10px;"><strong>🕒 Hora de recogida:</strong> <?php echo $hora; ?></p>
+            <p style="margin-bottom: 10px;"><strong>🕒 Hora de recogida:</strong> <?php echo html_escape($hora); ?></p>
             <?php endif; ?>
             
             <?php if (!empty($mascota) && $mascota == 1): ?>
@@ -214,7 +214,7 @@
         </p>
         <p>Atento a sus comentarios.</p>
         <p>Cordialmente:</p>
-        <img src="https://www.transdorado.co/cotizador_viajes/assets/img/firma.png" alt="firma" width="180px">
+        <img src="<?php echo $firma_src; ?>" alt="firma" width="180px">
         <p>ROGER STEVEN ESPEJO <br>
             Cargo: Gerente General <br>
         </p>

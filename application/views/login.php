@@ -1,186 +1,172 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<?php
+# Nota de Transparencia: Código generado/refactorizado con asistencia de IA Generativa (Claude Code) bajo la Política ODTI012 del CCS. Requiere supervisión y validación humana permanente.
+defined('BASEPATH') or exit('No direct script access allowed');
+?>
+<!DOCTYPE html>
+<html lang="es">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Administrador · Transportes Dorado</title>
 
-<title>Event_on</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="<?php echo IP_SERVER ?>assets/css/tokens.css">
+    <link rel="stylesheet" href="<?php echo IP_SERVER ?>assets/css/login.css">
+    <link rel="icon" type="image/png" href="<?php echo IP_SERVER ?>assets/img/logo_transdorado.png">
+</head>
 
-<link href="<?php echo IP_SERVER ?>assets/css/login.css" rel="stylesheet" type="text/css">
-<link rel="shortcut icon" href="<?php echo IP_SERVER ?>assets/img/event_on.png" title="CCS" id="CCS"
-    type="image/x-icon" />
+<body>
+    <div class="auth">
 
+        <!-- Panel de marca -->
+        <aside class="auth-hero">
+            <img class="auth-hero__logo" src="<?php echo IP_SERVER ?>assets/img/logo_transdorado.png"
+                alt="Transportes Dorado">
 
-<div class="container-fluid login-container">
-    <div class="row no-gutter">
-        <!-- The image half -->
-        <div class="col-md-6 d-none d-md-flex bg-image animate__fadeIn animate__animated">
-            <!-- <img class="img_bg" src="https://www.vansbogota.com/wp-content/uploads/2024/03/WhatsApp-Image-2024-02-28-at-5.50.49-PM.webp" alt=""> -->
-        </div>
-        <!-- The content half -->
-        <div class="col-md-6 bg-login animate__fadeIn animate__animated">
-            <div class="login d-flex align-items-center py-5">
-                <!-- Demo content-->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-10 col-xl-7 mx-auto">
-                            <h3 class="display-4 text-white text-center">Administrador</h3>
-                            <div class="text-center">
-                                <img class="" src="<?php echo IP_SERVER ?>/assets/img/logo_transdorado.png"
-                                    width="300px" alt="">
-                            </div>
-                            <p class=" mb-4 text-white">Inicia sesión</p>
-                            <form id="ingresar" method="post">
+            <div class="auth-hero__body">
+                <span class="auth-hero__eyebrow">Cotizador de viajes</span>
+                <h1 class="auth-hero__title">Gestiona rutas, tarifas y cotizaciones en un solo lugar</h1>
+                <p class="auth-hero__text">Panel administrativo para mantener al día los destinos y precios que tus
+                    clientes cotizan en línea.</p>
+                <ul class="auth-hero__list">
+                    <li><i class="bi bi-geo-alt" aria-hidden="true"></i> Destinos y rutas frecuentes</li>
+                    <li><i class="bi bi-bus-front" aria-hidden="true"></i> Precios por tipo de vehículo</li>
+                    <li><i class="bi bi-receipt" aria-hidden="true"></i> Cotizaciones recibidas</li>
+                </ul>
+            </div>
 
-                                <div class="form-group mb-3">
-                                    <input id="inputEmail" type="email" placeholder="usuario" autofocus=""
-                                        class="form-control rounded-pill border-0 shadow-sm px-4" name="email">
-                                </div>
+            <div>
+                <div class="brand-stripe" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                <p class="auth-hero__foot">&copy; <?php echo date('Y') ?> Transportes Dorado</p>
+            </div>
+        </aside>
 
-                                <div class="form-group mb-3 position-relative">
-                                    <input id="inputPassword" type="password" placeholder="Contraseña"
-                                        class="form-control rounded-pill border-0 shadow-sm px-4 text-primary pr-5"
-                                        name="contrasena">
-                                    <button
-                                        class="btn border-0 toggle-password position-absolute end-0 top-50 translate-middle-y "
-                                        type="button">
-                                        <i class="bi bi-eye-slash-fill" aria-hidden="true"></i>
-                                    </button>
-                                </div>
+        <!-- Formulario -->
+        <main class="auth-main">
+            <div class="auth-card">
+                <div class="brand-stripe" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                <h2 class="auth-card__title">Iniciar sesión</h2>
+                <p class="auth-card__subtitle">Ingresa con tu cuenta de administrador.</p>
 
-                                <button type="submit"
-                                    class="btn btn-primary btn-block text-uppercase my-2 rounded-pill w-100 shadow-sm btn-bg btn-login">Ingresar</button>
-                                <div class="text-center d-flex justify-content-center mt-2 text-white">
-                                    <p class="">¿Olvidaste tu contraseña? <a href="<?php echo IP_SERVER; ?>contacto" class=" ">
-                                            <u>Contacto</u></a></p>
-                                </div>
-                            </form>
+                <div id="authAlert" class="auth-alert" role="alert" aria-live="assertive">
+                    <i class="bi bi-exclamation-circle" aria-hidden="true"></i>
+                    <span id="authAlertText"></span>
+                </div>
 
+                <form id="ingresar" method="post" novalidate>
+                    <div class="field">
+                        <label for="inputEmail">Correo electrónico</label>
+                        <div class="field__control">
+                            <i class="bi bi-envelope field__icon" aria-hidden="true"></i>
+                            <input id="inputEmail" type="email" name="email" placeholder="nombre@empresa.com"
+                                autocomplete="username" maxlength="255" required autofocus>
                         </div>
                     </div>
-                </div><!-- End -->
 
+                    <div class="field">
+                        <label for="inputPassword">Contraseña</label>
+                        <div class="field__control">
+                            <i class="bi bi-lock field__icon" aria-hidden="true"></i>
+                            <input id="inputPassword" type="password" name="contrasena" placeholder="••••••••"
+                                autocomplete="current-password" maxlength="255" required>
+                            <button class="field__toggle" type="button" aria-label="Mostrar contraseña"
+                                aria-controls="inputPassword" aria-pressed="false">
+                                <i class="bi bi-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="btnIngresar" type="submit" class="btn-submit">
+                        <span class="btn-submit__label">Ingresar</span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </button>
+                </form>
+
+                <p class="auth-help">¿Olvidaste tu contraseña?
+                    <a href="<?php echo IP_SERVER ?>contacto">Contáctanos</a>
+                </p>
+
+                <a class="auth-back" href="<?php echo IP_SERVER ?>">
+                    <i class="bi bi-arrow-left" aria-hidden="true"></i> Volver al cotizador
+                </a>
             </div>
-        </div><!-- End -->
-
+        </main>
     </div>
-</div>
 
+    <script src="<?php echo IP_SERVER ?>assets/jquery/jquery.min.js"></script>
+    <script>
+        $(function () {
+            var $form = $('#ingresar');
+            var $email = $('#inputEmail');
+            var $password = $('#inputPassword');
+            var $btn = $('#btnIngresar');
+            var $alert = $('#authAlert');
 
-
-<script src="<?php echo IP_SERVER ?>assets/jquery/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-
-<script>
-    $(document).ready(function () {
-        $('#ingresar').submit(function (event) {
-            event.preventDefault();
-
-            // Obtener valores de los campos de email y contraseña
-            var email = $('#inputEmail').val();
-            var contrasena = $('#inputPassword').val();
-
-            // Verificar que el campo de email no esté vacío
-            if (email == '') {
-                Swal.fire({
-                    position: "top-end",
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Por favor ingrese su correo electrónico.',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showClass: {
-                        popup: `
-      animate__animated
-      animate__fadeInRight
-      animate__faster
-    `
-                    },
-                    hideClass: {
-                        popup: `
-      animate__animated
-      animate__fadeOutRight
-    `
-                    }
-                });
-                return;
-            }
-            // Verificar que el campo de email no esté vacío
-            if (contrasena == '') {
-                Swal.fire({
-                    position: "top-end",
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Por favor ingrese su contraseña.',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showClass: {
-                        popup: `
-      animate__animated
-      animate__fadeInRight
-      animate__faster
-    `
-                    },
-                    hideClass: {
-                        popup: `
-      animate__animated
-      animate__fadeOutRight
-    `
-                    }
-                });
-                return;
-            }
-
-            // Verificar que el campo de contraseña no esté vacío
-
-
-            // Si los campos no están vacíos, proceder con la solicitud AJAX
-            $.post('<?php echo IP_SERVER ?>Login/procesar',
-                $(this).serialize(),
-                function (result) {
-                    if (result.success == 1) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: result.msg,
-                            showConfirmButton: false,
-                            timer: 1000
-                        }).then(() => {
-                            location.assign('<?php echo IP_SERVER ?>Home/admin');
-                        });
-                    } else {
-                        let errorMessage = Object.values(result.msg).join('');
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            html: errorMessage,
-                            showConfirmButton: false,
-                            timerProgressBar: true,
-                            timer: 5000
-                        });
-                    }
+            function showError(msg, $field) {
+                $('#authAlertText').text(msg);
+                $alert.addClass('is-visible');
+                $form.find('input').attr('aria-invalid', 'false');
+                if ($field) {
+                    $field.attr('aria-invalid', 'true').trigger('focus');
                 }
-            );
+            }
+
+            function setLoading(loading) {
+                $btn.prop('disabled', loading);
+                $btn.find('.btn-submit__label').text(loading ? 'Ingresando…' : 'Ingresar');
+            }
+
+            $form.find('input').on('input', function () {
+                $(this).attr('aria-invalid', 'false');
+                $alert.removeClass('is-visible');
+            });
+
+            $form.on('submit', function (event) {
+                event.preventDefault();
+
+                var email = $.trim($email.val());
+                if (email === '' || !$email[0].checkValidity()) {
+                    showError('Ingresa un correo electrónico válido.', $email);
+                    return;
+                }
+                if ($password.val() === '') {
+                    showError('Ingresa tu contraseña.', $password);
+                    return;
+                }
+
+                setLoading(true);
+                $.post('<?php echo IP_SERVER ?>Login/procesar', $form.serialize(), null, 'json')
+                    .done(function (result) {
+                        if (result && result.success == 1) {
+                            $btn.find('.btn-submit__label').text('Bienvenido');
+                            location.assign('<?php echo IP_SERVER ?>Home/admin');
+                            return;
+                        }
+                        setLoading(false);
+                        $password.val('');
+                        showError((result && result.msg) || 'Usuario o contraseña incorrectos.', $password);
+                    })
+                    .fail(function () {
+                        setLoading(false);
+                        showError('No pudimos conectar con el servidor. Intenta de nuevo.');
+                    });
+            });
+
+            $('.field__toggle').on('click', function () {
+                var visible = $password.attr('type') === 'text';
+                $password.attr('type', visible ? 'password' : 'text');
+                $(this).attr({
+                    'aria-pressed': String(!visible),
+                    'aria-label': visible ? 'Mostrar contraseña' : 'Ocultar contraseña'
+                }).find('i').toggleClass('bi-eye bi-eye-slash');
+            });
         });
-    });
+    </script>
+</body>
 
-
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const togglePassword = document.querySelector('.toggle-password');
-        const passwordField = document.querySelector('#inputPassword');
-
-        togglePassword.addEventListener('click', function () {
-            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordField.setAttribute('type', type);
-            this.querySelector('i').classList.toggle('bi-eye');
-            this.querySelector('i').classList.toggle('bi-eye-slash-fill');
-        });
-    });
-
-
-</script>
+</html>
