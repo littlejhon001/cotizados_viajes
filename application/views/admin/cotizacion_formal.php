@@ -106,6 +106,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <thead>
                         <tr>
                             <th scope="col">Descripción</th>
+                            <th scope="col" class="it-fecha">Fecha</th>
                             <th scope="col" class="it-cant">Cant.</th>
                             <th scope="col" class="it-val">Valor unitario</th>
                             <th scope="col" class="it-tot">Total</th>
@@ -120,11 +121,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
         <!-- Condiciones -->
         <section class="card">
-            <div class="card__head"><h2 class="card__title">Condiciones y observaciones</h2></div>
+            <div class="card__head">
+                <h2 class="card__title">Texto de la cotización</h2>
+                <span class="card__meta">Las condiciones del servicio (A–I) se agregan automáticamente al PDF</span>
+            </div>
             <div class="form-grid">
                 <div class="field field--full">
-                    <label for="obs" class="visually-hidden">Condiciones y observaciones</label>
-                    <textarea id="obs" name="observaciones" rows="5" maxlength="2000"><?php echo html_escape($condiciones) ?></textarea>
+                    <label for="intro">Introducción</label>
+                    <textarea id="intro" name="intro" rows="2" maxlength="600"><?php echo html_escape($intro) ?></textarea>
+                </div>
+                <div class="field field--full">
+                    <label for="obs">Observaciones (opcional)</label>
+                    <textarea id="obs" name="observaciones" rows="3" maxlength="2000" placeholder="Paradas, itinerario, notas para el cliente…"><?php echo html_escape($condiciones) ?></textarea>
                 </div>
             </div>
         </section>
@@ -147,7 +155,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
                     <span><input type="checkbox" id="iva" name="iva" value="1"> Aplicar IVA (19%)</span>
                     <strong id="sIva">$ 0</strong>
                 </label>
+                <label class="sum-row check">
+                    <span><input type="checkbox" id="factura" name="factura" value="1"> Factura electrónica (<?php echo (int) $factura_porcentaje ?>%)</span>
+                    <strong id="sFactura">$ 0</strong>
+                </label>
                 <div class="sum-row sum-row--total"><span>Total</span><strong id="sTotal">$ 0</strong></div>
+                <div class="sum-row sum-row--input">
+                    <label for="horaAdicional">Hora adicional</label>
+                    <div class="money money--sm">
+                        <span class="money__sym" aria-hidden="true">$</span>
+                        <input id="horaAdicional" name="hora_adicional" class="money__input js-money" inputmode="numeric" maxlength="11" value="<?php echo number_format((int) $hora_adicional, 0, ',', '.') ?>">
+                    </div>
+                </div>
                 <div class="sum-row sum-row--input">
                     <label for="vigencia">Vigencia</label>
                     <div class="inline-unit">
@@ -173,6 +192,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
             <label class="visually-hidden">Descripción</label>
             <textarea class="it-input it-input--desc js-desc" rows="2" maxlength="255" placeholder="Descripción del servicio"></textarea>
         </td>
+        <td class="it-fecha">
+            <label class="visually-hidden">Fecha del servicio</label>
+            <input class="it-input js-fecha" type="date">
+        </td>
         <td class="it-cant">
             <label class="visually-hidden">Cantidad</label>
             <input class="it-input it-input--num js-cant" type="number" min="0.5" step="0.5" max="1000" value="1" inputmode="decimal">
@@ -194,6 +217,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var IVA = 0.19;
+        var FACTURA = <?php echo (int) $factura_porcentaje ?> / 100;
         var $form = $('#formCot');
         var $items = $('#items');
         var tpl = document.getElementById('tplItem');
@@ -230,11 +254,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
             var desc = Math.min(Number(digitos($('#descuento').val())) || 0, subtotal);
             var base = subtotal - desc;
             var iva = $('#iva').is(':checked') ? Math.round(base * IVA) : 0;
+            var factura = $('#factura').is(':checked') ? Math.round(base * FACTURA) : 0;
             $('#sSubtotal').text(cop(subtotal));
             $('#sIva').text(cop(iva));
-            $('#sTotal').text(cop(base + iva));
+            $('#sFactura').text(cop(factura));
+            $('#sTotal').text(cop(base + iva + factura));
             $('#itemsVacio').prop('hidden', $items.children().length > 0);
-            return { total: base + iva };
+            return { total: base + iva + factura };
         }
 
         $form.on('input', '.js-money', function () { formatearMoney(this); });
@@ -287,8 +313,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
                 fd.append('items[' + i + '][descripcion]', $(this).find('.js-desc').val());
                 fd.append('items[' + i + '][cantidad]', $(this).find('.js-cant').val());
                 fd.append('items[' + i + '][valor]', digitos($(this).find('.js-val').val()));
+                fd.append('items[' + i + '][fecha]', $(this).find('.js-fecha').val() || '');
             });
             fd.set('descuento', digitos($('#descuento').val()));
+            fd.set('hora_adicional', digitos($('#horaAdicional').val()));
             return fd;
         }
 

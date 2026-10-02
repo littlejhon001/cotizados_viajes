@@ -637,6 +637,7 @@ a.kpi:hover { border-color: #BCC4D3; }
 .items-tbl td { padding: 8px 10px; }
 .items-tbl th:first-child, .items-tbl td:first-child { padding-left: 18px; }
 .items-tbl .it-cant { width: 90px; }
+.items-tbl .it-fecha { width: 150px; }
 .items-tbl .it-val { width: 170px; }
 .items-tbl .it-tot { width: 130px; text-align: right; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .items-tbl th.it-tot { font-weight: 600; }
@@ -741,6 +742,7 @@ a.kpi:hover { border-color: #BCC4D3; }
     .items-tbl tr.item td { display: block; width: auto !important; padding: 0 !important; border: 0; }
     .items-tbl tr.item td:first-child { grid-column: 1 / -1; padding-right: 40px !important; }
     .items-tbl tr.item .it-tot { align-self: center; padding-top: 0 !important; }
+    .items-tbl tr.item .it-fecha { grid-column: 1 / -1; }
     .items-tbl tr.item .col-actions { position: absolute; top: 12px; right: 12px; }
     .pager .btn span { display: none; }
     .tbl th, .tbl td { padding-left: 12px; padding-right: 12px; }

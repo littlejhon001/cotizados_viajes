@@ -109,10 +109,10 @@
                             </td>
                             <td>
                                 Cliente:<br>
-                                <?php echo $nombre; ?><br>
-                                <?php echo $apellido; ?><br>
-                                <?php echo $telefono; ?><br>
-                                <?php echo $correo; ?>
+                                <?php echo html_escape($nombre); ?><br>
+                                <?php echo html_escape($apellido); ?><br>
+                                <?php echo html_escape($telefono); ?><br>
+                                <?php echo html_escape($correo); ?>
                             </td>
                         </tr>
                     </table>
@@ -125,15 +125,15 @@
             </tr>
             <?php // foreach ($items as $item): ?>
             <tr class="item">
-                <td><?php echo $trayecto; ?></td>
-                <td><?php echo $dia; ?></td>
-                <td><?php echo $vehiculo; ?></td>
+                <td><?php echo html_escape($trayecto); ?></td>
+                <td><?php echo html_escape($dia); ?></td>
+                <td><?php echo html_escape($vehiculo); ?></td>
             </tr>
             <?php // endforeach; ?>
             <tr class="total">
                 <td></td>
                 <td></td>
-                <td>Total: <?php echo $precio; ?></td>
+                <td>Total: <?php echo html_escape($precio); ?></td>
             </tr>
         </table>
 
@@ -143,11 +143,11 @@
             <h3 style="color: #333; margin-bottom: 15px;">Información Adicional del Servicio</h3>
             
             <?php if (!empty($direccion)): ?>
-            <p><strong>📍 Dirección de recogida:</strong> <?php echo $direccion; ?></p>
+            <p><strong>📍 Dirección de recogida:</strong> <?php echo html_escape($direccion); ?></p>
             <?php endif; ?>
             
             <?php if (!empty($hora)): ?>
-            <p><strong>🕒 Hora de recogida:</strong> <?php echo $hora; ?></p>
+            <p><strong>🕒 Hora de recogida:</strong> <?php echo html_escape($hora); ?></p>
             <?php endif; ?>
             
             <?php if (!empty($mascota) && $mascota == 1): ?>

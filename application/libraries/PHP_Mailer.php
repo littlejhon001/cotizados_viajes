@@ -73,6 +73,14 @@ class Php_mailer {
 				$mail->setFrom(self::env('SMTP_FROM', self::env('SMTP_USER')), self::env('SMTP_FROM_NAME', 'Cotizador Transdorado'));
 				$mail->Subject = empty($correo->subject) ? 'Cotización' : $correo->subject;
                 $mail->AddEmbeddedImage(FCPATH . "assets/img/logo_transdorado.png", "main_logo");  //logo principal
+				// Imágenes adicionales dentro del cuerpo: array(array('path' => ..., 'cid' => ...))
+				if (!empty($correo->embedded) && is_array($correo->embedded)) {
+					foreach ($correo->embedded as $img) {
+						if (isset($img['path'], $img['cid']) && is_readable($img['path'])) {
+							$mail->AddEmbeddedImage($img['path'], $img['cid']);
+						}
+					}
+				}
 				$mail->IsHTML(true);
 				$mail->addAddress($correo->email);
 				if (!empty($correo->addbcc)) {

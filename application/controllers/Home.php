@@ -11,11 +11,14 @@ class Home extends CI_Controller
     {
         parent::__construct();
         
-        // Configurar headers CORS para permitir peticiones cross-origin
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE');
-        header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
-        header('Access-Control-Allow-Credentials: true');
+        // CORS solo para orígenes conocidos (sitio principal y la propia app)
+        $origen = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+        if ($origen !== '' && in_array($origen, $this->origenes_permitidos(), true)) {
+            header('Access-Control-Allow-Origin: ' . $origen);
+            header('Vary: Origin');
+            header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+            header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
+        }
         
         // Manejar peticiones OPTIONS (preflight)
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -210,16 +213,42 @@ class Home extends CI_Controller
     }
     public function get_tarifa()
     {
-        // Asegurar headers CORS y Content-Type
-        header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json; charset=utf-8');
-        
+
         $id_destino = $this->input->post('id_destino');
         $id_vehiculo = $this->input->post('id_vehiculo');
         $dia = $this->input->post('dia');
         $data = $this->Precios_model->get_tarifa($id_destino, $id_vehiculo, $dia);
         $this->json($data);
     }
+    /**
+     * Tarifas disponibles (> 0) de un destino: { "id_vehiculo": { "dia": tarifa } }.
+     * Permite al cotizador público mostrar solo combinaciones con precio.
+     */
+    public function tarifas_destino()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: public, max-age=300');
+        $id_destino = (int) $this->input->get_post('id_destino');
+        if ($id_destino <= 0 || empty($this->Destinos_model->find($id_destino))) {
+            http_response_code(404);
+            echo json_encode(new stdClass());
+            return;
+        }
+        $salida = array();
+        foreach ($this->Precios_model->get_precios_por_destino($id_destino) as $dia => $vehiculos) {
+            if (!in_array((int) $dia, self::DIAS_TARIFA, true)) {
+                continue;
+            }
+            foreach ($vehiculos as $id_vehiculo => $tarifa) {
+                if ((float) $tarifa > 0) {
+                    $salida[(int) $id_vehiculo][(int) $dia] = (int) round($tarifa);
+                }
+            }
+        }
+        echo json_encode((object) $salida);
+    }
+
     public function cotizacion()
     {
         $emular_datos = (object) array(
@@ -268,181 +297,277 @@ class Home extends CI_Controller
         $this->load->view('layouts/footer');
     }
 
+    /**
+     * Cotización pública: guarda la solicitud y la envía por correo al cliente
+     * con el PDF adjunto. Precio y nombres se toman de la base, no del navegador.
+     */
     public function enviar_cotizacion()
     {
-        // Asegurar headers CORS y Content-Type
-        header('Access-Control-Allow-Origin: *');
-        header('Content-Type: application/json; charset=utf-8');
-        
-        // Obtener los datos del formulario
-        $correo = $this->input->post('correo');
-        $nombre = $this->input->post('nombre');
-        $telefono = $this->input->post('telefono');
-        $apellido = $this->input->post('apellidos');
-        $precio = $this->input->post('precio');
-        $trayecto = $this->input->post('trayecto');
-        $vehiculo = $this->input->post('vehiculo');
-        $dia = $this->input->post('dia');
-        $created_at = date('Y-m-d H:i:s');
-
-        $hora = $this->input->post('hora');
-        $direccion = $this->input->post('direccion');
-
-
-        $politicas = $this->input->post('politicas') === 'true' || $this->input->post('politicas') === 'on' ? 1 : 0;
-        $mascotas = $this->input->post('mascotas') === 'true' || $this->input->post('mascotas') === 'on' ? 1 : 0;
-
-        $comentarios = $this->input->post('comentarios');
-
-        // Crear un objeto con los datos del formulario
-        $data = (object) array(
-            'correo' => $correo,
-            'nombre' => $nombre,
-            'telefono' => $telefono,
-            'apellido' => $apellido,
-            'precio' => $precio,
-            'trayecto' => $trayecto,
-            'vehiculo' => $vehiculo,
-            'dia' => $dia,
-            'politica' => $politicas,
-            'hora' => $hora,
-            'direccion' => $direccion,
-            'mascota' => $mascotas,
-            'comentarios' => $comentarios,
-            'created_at' => $created_at
-        );
-
-
-        // Cargar la vista y obtener el contenido HTML como un string
-        $html = $this->load->view('mails/_cotizacion', $data, true);
-        $this->Usuarios_model->insert($data);
-        
-        // Generar el PDF
-        $this->load->library('dompdf_gen');
-        $html_pdf = $this->load->view('pdf/cotizacion', $data, true);
-        $pdf_content = $this->dompdf_gen->generate($html_pdf, "cotizacion_" . date('Y-m-d_H-i-s') . ".pdf", false, 'A4', 'landscape');
-        
-        // Guardar temporalmente el PDF
-        $temp_pdf_path = FCPATH . 'temp/cotizacion_' . uniqid() . '.pdf';
-        
-        // Crear directorio temp si no existe
-        if (!is_dir(FCPATH . 'temp')) {
-            mkdir(FCPATH . 'temp', 0755, true);
+        $sol = $this->preparar_solicitud_publica();
+        if (isset($sol['error'])) {
+            $this->json_publico('error', $sol['error'], isset($sol['http']) ? $sol['http'] : 200);
+            return;
         }
-        
-        file_put_contents($temp_pdf_path, $pdf_content);
-        
-        // Crear un objeto para pasar al php_mailer con el destinatario y el contenido
-        $correo_obj = (object) array(
-            'email' => $correo,
-            'subject' => 'Cotización Transdorado',
-            'body' => $html,
-            'addbcc' => 'cotizaciones@transdorado.co',
-            'attachment' => array(
-                array(
-                    'path' => $temp_pdf_path,
-                    'name' => 'Cotizacion_Transdorado_' . date('Y-m-d') . '.pdf'
-                )
-            )
-        );
+        if (!empty($sol['bot'])) {
+            // Campo trampa lleno: se responde como éxito para no dar pistas al bot
+            $this->json_publico('success', 'La cotización de tu viaje se ha enviado correctamente.');
+            return;
+        }
+        if (!$this->limite_envios('correo', 5, 600) || !$this->limite_envios('correo_dia', 20, 86400)) {
+            $this->json_publico('error', 'Has enviado varias cotizaciones seguidas. Espera unos minutos e intenta de nuevo.', 429);
+            return;
+        }
 
-        // Cargar la librería php_mailer y enviar el correo
+        $data = $sol['data'];
+        $this->registrar_solicitud($data);
+        $cot = $this->cotizacion_desde_solicitud($sol);
+
+        $correo_obj = (object) array(
+            'email' => $data->correo,
+            'subject' => 'Cotización ' . $cot['referencia'] . ' · Transportes Dorado',
+            'body' => $this->load->view('mails/_cotizacion_formal', array('cot' => $cot, 'firmante' => $this->firmante()), true),
+            'embedded' => array(array('path' => FCPATH . 'assets/img/firma_cotizacion.png', 'cid' => 'firma')),
+            'addbcc' => 'cotizaciones@transdorado.co',
+            'attachment' => array(array(
+                'content' => $this->render_cotizacion_pdf($cot),
+                'name' => $cot['referencia'] . '.pdf',
+                'type' => 'application/pdf',
+            )),
+        );
         $this->load->library('Php_mailer', null, 'Php_mailer');
         $respuesta = $this->Php_mailer->enviarcorreo($correo_obj);
-        
-        // Eliminar el archivo temporal después de enviar el correo
-        if (file_exists($temp_pdf_path)) {
-            unlink($temp_pdf_path);
-        }
-        // emulacion de respuesta
-        // $respuesta = (object) array (
-        //     'success' => true,
-        //     'error' => ''
-        // );
+        $this->log_evento('cotizacion_publica_correo', array('id_destino' => $sol['ids']['destino'], 'enviado' => !empty($respuesta->success)));
 
-        // Verificar si el correo fue enviado exitosamente
-        if ($respuesta->success) {
-            // Retorna un mensaje JSON indicando éxito
-            echo json_encode(['status' => 'success', 'message' => 'La cotización de tu viaje se ha enviado correctamente con el PDF adjunto.']);
+        if (!empty($respuesta->success)) {
+            $this->json_publico('success', 'La cotización de tu viaje se ha enviado correctamente con el PDF adjunto.');
         } else {
-            // Retorna un mensaje JSON indicando error
-            echo json_encode(['status' => 'error', 'message' => 'Hubo un error al enviar la cotización. Por favor, intenta nuevamente. ' . $respuesta->error]);
+            // El detalle técnico va al log, nunca al usuario
+            log_message('error', 'cotizacion_publica_correo: ' . (isset($respuesta->error) ? substr($respuesta->error, 0, 300) : 'sin detalle'));
+            $this->json_publico('error', 'Recibimos tu solicitud, pero no pudimos enviar el correo. Un asesor te contactará pronto.');
         }
     }
 
 
+    /** Cotización pública: guarda la solicitud y descarga el PDF. */
     public function imprimir()
     {
-        var_dump($this->input->post());
-        // Recuperar datos de entrada
-        $nombre = $this->input->post('nombre');
-        $telefono = $this->input->post('telefono');
-        $correo = $this->input->post('correo');
-        $apellido = $this->input->post('apellidos');
-        $precio = $this->input->post('precio');
-        $trayecto = $this->input->post('trayecto');
-        $vehiculo = $this->input->post('vehiculo');
-        $dia = $this->input->post('dia');
-        $politicas = $this->input->post('politicas') === 'true' || $this->input->post('politicas') === 'on' ? 1 : 0;
-        
-        // Campos adicionales
-        $direccion = $this->input->post('direccion');
-        $hora = $this->input->post('hora');
-        $mascotas = $this->input->post('mascotas') === 'true' || $this->input->post('mascotas') === 'on' || $this->input->post('mascotas') === '1' ? 1 : 0;
-        $comentarios = $this->input->post('comentarios');
-        $more_info = $this->input->post('more_info') === 'true' || $this->input->post('more_info') === 'on' || $this->input->post('more_info') === '1' ? 1 : 0;
-        
-        $created_at = date('Y-m-d H:i:s');
+        $sol = $this->preparar_solicitud_publica();
+        if (isset($sol['error'])) {
+            $this->json_publico('error', $sol['error'], isset($sol['http']) ? $sol['http'] : 422);
+            return;
+        }
+        if (empty($sol['bot'])) {
+            if (!$this->limite_envios('pdf', 15, 600)) {
+                $this->json_publico('error', 'Has generado varias cotizaciones seguidas. Espera unos minutos e intenta de nuevo.', 429);
+                return;
+            }
+            $this->registrar_solicitud($sol['data']);
+        }
 
-        // Datos que se pasarán a la vista
-        $data = (object) array(
-            'nombre' => $nombre,
-            'telefono' => $telefono,
-            'correo' => $correo,
-            'apellido' => $apellido,
-            'precio' => $precio,
-            'trayecto' => $trayecto,
-            'vehiculo' => $vehiculo,
-            'dia' => $dia,
-            'politica' => $politicas,
-            'direccion' => $direccion,
-            'hora' => $hora,
-            'mascota' => $mascotas,
-            'comentarios' => $comentarios,
-            'more_info' => $more_info,
-            'created_at' => $created_at
-        );
-        $this->Usuarios_model->insert($data);
-
-
-        // $emular_datos = (object) array(
-        //     'nombre' => 'Juan Guevara',
-        //     'telefono' => '1234567890',
-        //     'apellido' => 'Guevara',
-        //     'correo' => 'jhgomor@gmail.com',
-        //     'precio' => '100.000',
-        //     'trayecto' => 'Bogotá - Medellín',
-        //     'vehiculo' => 'Bus',
-        //     'dia' => '1',
-        //     'politica' => '1',
-
-        // );
-
-        // Cargar la biblioteca DomPDF
-        $this->load->library('dompdf_gen');
-        // Generar HTML desde la vista
-        $html = $this->load->view('pdf/cotizacion', $data, true);
-        $pdf = $this->dompdf_gen->generate($html, "cotizacion" . date('Y-m-d') . ".pdf", false, 'A4', 'landscape');
-
-
+        $cot = $this->cotizacion_desde_solicitud($sol);
+        $pdf = $this->render_cotizacion_pdf($cot);
         header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename="cotizacion" ' . date('Y-m-d') . '.pdf');
-        header('Expires: 0');
-        header('Content-Transfer-Encoding: binary');
-        // header('Content-Length: '.$filesize);
+        header('Content-Disposition: attachment; filename="' . $cot['referencia'] . '.pdf"');
+        header('Content-Length: ' . strlen($pdf));
         header('Cache-Control: private, no-transform, no-store, must-revalidate');
-
         echo $pdf;
+    }
+
+    /**
+     * Valida la solicitud del formulario público y arma el registro.
+     * Precio, destino y vehículo salen de la base a partir de los IDs.
+     *
+     * @return array array('data' => object, 'ids' => array, 'bot' => bool) o array('error' => mensaje, 'http' => código)
+     */
+    private function preparar_solicitud_publica()
+    {
+        if ($this->input->method() !== 'post') {
+            return array('error' => 'Método no permitido.', 'http' => 405);
+        }
+        $origen = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+        if ($origen !== '' && !in_array($origen, $this->origenes_permitidos(), true)) {
+            return array('error' => 'Origen no permitido.', 'http' => 403);
+        }
+
+        $txt = function ($campo, $max) {
+            $v = trim(preg_replace('/[^\P{C}\n]+/u', '', (string) $this->input->post($campo)));
+            return mb_substr($v, 0, $max);
+        };
+        $marcado = function ($campo) {
+            return in_array((string) $this->input->post($campo), array('true', 'on', '1'), true) ? 1 : 0;
+        };
+
+        $nombre = $txt('nombre', 60);
+        $apellido = $txt('apellidos', 60);
+        $telefono = preg_replace('/\D/', '', $txt('telefono', 20));
+        $correo = $txt('correo', 150);
+        $direccion = $txt('direccion', 200);
+        $hora = $txt('hora', 5);
+        $comentarios = $txt('comentarios', 255);
+        $id_destino = (int) $this->input->post('id_destino');
+        $id_vehiculo = (int) $this->input->post('id_vehiculo');
+        $dia = (int) $this->input->post('dia');
+
+        if ($nombre === '' || $apellido === '') {
+            return array('error' => 'Escribe tu nombre y apellidos.');
+        }
+        if (strlen($telefono) < 7 || strlen($telefono) > 15) {
+            return array('error' => 'Escribe un número de teléfono válido.');
+        }
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            return array('error' => 'Escribe un correo electrónico válido.');
+        }
+        if (!$marcado('politicas')) {
+            return array('error' => 'Debes aceptar la política de privacidad.');
+        }
+        if ($hora !== '' && !preg_match('/^([01]\d|2[0-3]):[0-5]\d$/', $hora)) {
+            return array('error' => 'La hora de recogida no es válida.');
+        }
+        if (!in_array($dia, self::DIAS_TARIFA, true)) {
+            return array('error' => 'Selecciona la duración del viaje.');
+        }
+
+        $destino = $id_destino ? $this->Destinos_model->find($id_destino) : null;
+        $vehiculo = $id_vehiculo ? $this->Vehiculos_model->find($id_vehiculo) : null;
+        if (empty($destino) || empty($vehiculo)) {
+            return array('error' => 'Selecciona un destino y un vehículo válidos.');
+        }
+        $fila = $this->Precios_model->get_tarifa($id_destino, $id_vehiculo, $dia);
+        $tarifa = !empty($fila[0]) ? (float) $fila[0]->tarifa : 0;
+        if ($tarifa <= 0) {
+            return array('error' => 'No tenemos tarifa para esa combinación. Prueba otro día o vehículo.');
+        }
+
+        $limpiar = function ($t) {
+            return trim(preg_replace('/\s+/u', ' ', (string) $t));
+        };
+        return array(
+            'bot' => trim((string) $this->input->post('website')) !== '',
+            'ids' => array('destino' => $id_destino, 'vehiculo' => $id_vehiculo),
+            'tarifa' => (int) round($tarifa),
+            'data' => (object) array(
+                'correo' => $correo,
+                'nombre' => $nombre,
+                'telefono' => $telefono,
+                'apellido' => $apellido,
+                'precio' => 'Precio: $ ' . number_format($tarifa, 2, ',', '.'),
+                'trayecto' => $limpiar($destino->destino),
+                'vehiculo' => $limpiar($vehiculo->vehiculo),
+                'dia' => (string) $dia,
+                'politica' => 1,
+                'hora' => $hora,
+                'direccion' => $direccion,
+                'mascota' => $marcado('mascotas'),
+                'comentarios' => $comentarios,
+                'more_info' => $marcado('more_info'),
+                'created_at' => date('Y-m-d H:i:s'),
+            ),
+        );
+    }
+
+    /** Inserta la solicitud salvo que sea la misma de los últimos 10 minutos (clic en PDF y en correo). */
+    private function registrar_solicitud($data)
+    {
+        $existe = $this->db->where('correo', $data->correo)
+            ->where('trayecto', $data->trayecto)
+            ->where('vehiculo', $data->vehiculo)
+            ->where('dia', $data->dia)
+            ->where('created_at >=', date('Y-m-d H:i:s', strtotime('-10 minutes')))
+            ->count_all_results('usuarios');
+        if (!$existe) {
+            $this->Usuarios_model->insert($data);
+        }
+    }
+
+    /**
+     * Límite simple de solicitudes por IP usando la caché en archivos.
+     *
+     * @return bool true si aún está dentro del límite
+     */
+    private function limite_envios($accion, $max, $ventana)
+    {
+        $this->load->driver('cache', array('adapter' => 'file'));
+        $clave = 'rl_' . $accion . '_' . md5((string) $this->input->ip_address());
+        $registro = $this->cache->get($clave);
+        $ahora = time();
+        if (!is_array($registro) || $registro['hasta'] < $ahora) {
+            $registro = array('n' => 0, 'hasta' => $ahora + $ventana);
+        }
+        if ($registro['n'] >= $max) {
+            return false;
+        }
+        $registro['n']++;
+        $this->cache->save($clave, $registro, $registro['hasta'] - $ahora);
+        return true;
+    }
+
+    /**
+     * Convierte una solicitud del cotizador público al formato de la
+     * cotización formal, para usar el mismo PDF y el mismo correo.
+     */
+    private function cotizacion_desde_solicitud($sol)
+    {
+        $d = $sol['data'];
+        $dias = (int) $d->dia;
+        $observaciones = array();
+        if ($d->mascota) {
+            $observaciones[] = 'El cliente viaja con mascota.';
+        }
+        if ($d->comentarios !== '') {
+            $observaciones[] = 'Comentarios del cliente: ' . $d->comentarios;
+        }
+        $observaciones = implode("\n", $observaciones);
+        $tarifa = (int) $sol['tarifa'];
+        $vigencia = 15;
+        return array(
+            'referencia' => $this->referencia_cotizacion(),
+            'fecha' => date('d/m/Y'),
+            'cliente' => array(
+                'nombre' => trim($d->nombre . ' ' . $d->apellido),
+                'documento' => '',
+                'telefono' => $d->telefono,
+                'correo' => $d->correo,
+            ),
+            'viaje' => array('fecha' => '', 'hora' => $d->hora, 'origen' => $d->direccion, 'pasajeros' => null),
+            'iva' => false,
+            'factura' => false,
+            'hora_adicional' => self::HORA_ADICIONAL,
+            'intro' => self::INTRO_COTIZACION_WEB,
+            'vigencia' => $vigencia,
+            'vence' => date('d/m/Y', strtotime('+' . $vigencia . ' days')),
+            'observaciones' => $observaciones,
+            'items' => array(array(
+                'descripcion' => 'Transporte a ' . $d->trayecto . ' · ' . $d->vehiculo . ' · ' . $dias . ($dias === 1 ? ' día' : ' días'),
+                'cantidad' => 1,
+                'valor' => $tarifa,
+                'total' => $tarifa,
+                'fecha' => '',
+            )),
+            'totales' => array('subtotal' => $tarifa, 'descuento' => 0, 'base' => $tarifa, 'iva' => 0, 'factura' => 0, 'total' => $tarifa),
+        );
+    }
+
+    /** Respuesta JSON del cotizador público, en el formato que espera el front. */
+    private function json_publico($status, $message, $http = 200)
+    {
+        http_response_code($http);
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(array('status' => $status, 'message' => $message));
+    }
+
+    /** Orígenes que pueden llamar al cotizador (sitio principal y la propia app). */
+    private function origenes_permitidos()
+    {
+        $propio = parse_url(IP_SERVER);
+        $lista = array('https://www.transdorado.co', 'https://transdorado.co');
+        if (!empty($propio['scheme']) && !empty($propio['host'])) {
+            $lista[] = $propio['scheme'] . '://' . $propio['host'] . (!empty($propio['port']) ? ':' . $propio['port'] : '');
+        }
+        $extra = getenv('ALLOWED_ORIGINS');
+        if ($extra) {
+            $lista = array_merge($lista, array_map('trim', explode(',', $extra)));
+        }
+        return $lista;
     }
 
     public function crear_destino()
@@ -601,6 +726,9 @@ class Home extends CI_Controller
             'vehiculos' => $lista_vehiculos,
             'dias' => self::DIAS_TARIFA,
             'condiciones' => self::CONDICIONES_COTIZACION,
+            'intro' => self::INTRO_COTIZACION,
+            'hora_adicional' => self::HORA_ADICIONAL,
+            'factura_porcentaje' => self::FACTURA_PORCENTAJE,
         );
         $this->load->view('layouts/admin_header', $data);
         $this->load->view('admin/cotizacion_formal', $data);
@@ -642,7 +770,8 @@ class Home extends CI_Controller
         $correo = (object) array(
             'email' => $cot['cliente']['correo'],
             'subject' => 'Cotización ' . $cot['referencia'] . ' · Transportes Dorado',
-            'body' => $this->load->view('mails/_cotizacion_formal', array('cot' => $cot), true),
+            'body' => $this->load->view('mails/_cotizacion_formal', array('cot' => $cot, 'firmante' => $this->firmante()), true),
+            'embedded' => array(array('path' => FCPATH . 'assets/img/firma_cotizacion.png', 'cid' => 'firma')),
             'attachment' => array(array(
                 'content' => $this->render_cotizacion_pdf($cot),
                 'name' => $cot['referencia'] . '.pdf',
@@ -662,7 +791,12 @@ class Home extends CI_Controller
     }
 
     const IVA_PORCENTAJE = 19;
-    const CONDICIONES_COTIZACION = "Precios en pesos colombianos (COP).\nIncluye conductor, combustible y seguros de ley.\nNo incluye peajes ni parqueaderos salvo que se indique en los ítems.\nLa reserva se confirma con el pago del anticipo acordado.";
+    const FACTURA_PORCENTAJE = 7;
+    const HORA_ADICIONAL = 100000;
+    const INTRO_COTIZACION = 'De acuerdo a lo dialogado por teléfono enviamos cotización de nuestros productos y servicios de transporte.';
+    const INTRO_COTIZACION_WEB = 'Gracias por cotizar en nuestro sitio web. Enviamos la cotización del servicio de transporte que solicitaste.';
+    // Las condiciones del servicio (cláusulas A a I) están en la plantilla pdf/cotizacion_formal.php
+    const CONDICIONES_COTIZACION = '';
 
     /** Referencia legible sin consecutivo (no se guarda historial). */
     private function referencia_cotizacion()
@@ -703,6 +837,9 @@ class Home extends CI_Controller
                 'pasajeros' => isset($viaje['pasajeros']) && $viaje['pasajeros'] !== '' ? (int) $viaje['pasajeros'] : null,
             ),
             'iva' => !empty($in['iva']),
+            'factura' => !empty($in['factura']),
+            'hora_adicional' => isset($in['hora_adicional']) && $in['hora_adicional'] !== '' ? (int) preg_replace('/\D/', '', (string) $in['hora_adicional']) : self::HORA_ADICIONAL,
+            'intro' => $txt(isset($in['intro']) && trim((string) $in['intro']) !== '' ? $in['intro'] : self::INTRO_COTIZACION, 600),
             'vigencia' => isset($in['vigencia']) ? (int) $in['vigencia'] : 15,
             'observaciones' => $txt(isset($in['observaciones']) ? $in['observaciones'] : '', 2000),
             'items' => array(),
@@ -746,6 +883,13 @@ class Home extends CI_Controller
             $desc = $txt(is_array($it) && isset($it['descripcion']) ? $it['descripcion'] : '', 255);
             $cant = is_array($it) && isset($it['cantidad']) ? str_replace(',', '.', (string) $it['cantidad']) : '';
             $valor = is_array($it) && isset($it['valor']) ? preg_replace('/\D/', '', (string) $it['valor']) : '';
+            $fecha_it = is_array($it) && isset($it['fecha']) ? trim((string) $it['fecha']) : '';
+            if ($fecha_it !== '') {
+                $f = DateTime::createFromFormat('Y-m-d', $fecha_it);
+                if (!$f || $f->format('Y-m-d') !== $fecha_it) {
+                    return array('error' => 'La fecha del ítem ' . ($n + 1) . ' no es válida.');
+                }
+            }
             if ($desc === '') {
                 return array('error' => 'El ítem ' . ($n + 1) . ' no tiene descripción.');
             }
@@ -757,7 +901,7 @@ class Home extends CI_Controller
             }
             $total_item = round((float) $cant * (int) $valor);
             $subtotal += $total_item;
-            $cot['items'][] = array('descripcion' => $desc, 'cantidad' => (float) $cant, 'valor' => (int) $valor, 'total' => $total_item);
+            $cot['items'][] = array('descripcion' => $desc, 'cantidad' => (float) $cant, 'valor' => (int) $valor, 'total' => $total_item, 'fecha' => $this->fecha_larga($fecha_it));
         }
 
         $descuento = isset($in['descuento']) ? (int) preg_replace('/\D/', '', (string) $in['descuento']) : 0;
@@ -765,8 +909,12 @@ class Home extends CI_Controller
             return array('error' => 'El descuento no puede ser mayor que el subtotal.');
         }
         $base = $subtotal - $descuento;
+        if ($cot['hora_adicional'] > 10000000) {
+            return array('error' => 'El valor de la hora adicional no es válido.');
+        }
         $iva = $cot['iva'] ? round($base * self::IVA_PORCENTAJE / 100) : 0;
-        $cot['totales'] = array('subtotal' => $subtotal, 'descuento' => $descuento, 'base' => $base, 'iva' => $iva, 'total' => $base + $iva);
+        $factura = $cot['factura'] ? round($base * self::FACTURA_PORCENTAJE / 100) : 0;
+        $cot['totales'] = array('subtotal' => $subtotal, 'descuento' => $descuento, 'base' => $base, 'iva' => $iva, 'factura' => $factura, 'total' => $base + $iva + $factura);
         $cot['vence'] = date('d/m/Y', strtotime('+' . $cot['vigencia'] . ' days'));
         return $cot;
     }
@@ -774,13 +922,56 @@ class Home extends CI_Controller
     private function render_cotizacion_pdf($cot)
     {
         $logo = FCPATH . 'assets/img/logo_transdorado.png';
+        $firma = FCPATH . 'assets/img/firma_cotizacion.png';
         $html = $this->load->view('pdf/cotizacion_formal', array(
             'cot' => $cot,
             'logo' => is_readable($logo) ? 'data:image/png;base64,' . base64_encode(file_get_contents($logo)) : '',
+            'firma' => is_readable($firma) ? 'data:image/png;base64,' . base64_encode(file_get_contents($firma)) : '',
+            'firmante' => $this->firmante(),
             'iva_porcentaje' => self::IVA_PORCENTAJE,
+            'factura_porcentaje' => self::FACTURA_PORCENTAJE,
+            'fecha_larga' => $this->fecha_larga(date('Y-m-d')),
+            'pago' => $this->datos_pago(),
         ), true);
         $this->load->library('dompdf_gen');
         return $this->dompdf_gen->generate($html, $cot['referencia'] . '.pdf', false, 'letter', 'portrait');
+    }
+
+    /** "2026-12-04" -> "4 de diciembre de 2026" */
+    private function fecha_larga($ymd)
+    {
+        if (!$ymd || !($t = strtotime($ymd))) {
+            return '';
+        }
+        $meses = array('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre');
+        return (int) date('j', $t) . ' de ' . $meses[(int) date('n', $t) - 1] . ' de ' . date('Y', $t);
+    }
+
+    /**
+     * Medios de pago para las cláusulas de reserva. Son datos financieros:
+     * se configuran en .env (PAGO_MEDIOS, PAGO_CUENTA_EMPRESA) y no en el código.
+     */
+    private function datos_pago()
+    {
+        $this->load->library('Php_mailer', null, 'Php_mailer');
+        $medios = getenv('PAGO_MEDIOS');
+        $empresa = getenv('PAGO_CUENTA_EMPRESA');
+        return array(
+            'medios' => $medios !== false ? trim($medios) : '',
+            'empresa' => $empresa !== false ? trim($empresa) : '',
+        );
+    }
+
+    /** Firmante de las cotizaciones; el nombre se configura en .env (FIRMA_NOMBRE), no en el código. */
+    private function firmante()
+    {
+        $this->load->library('Php_mailer', null, 'Php_mailer');
+        $nombre = getenv('FIRMA_NOMBRE');
+        $cargo = getenv('FIRMA_CARGO');
+        return array(
+            'nombre' => $nombre !== false ? trim($nombre) : '',
+            'cargo' => $cargo !== false && trim($cargo) !== '' ? trim($cargo) : 'Gerente General',
+        );
     }
 
     /** Log estructurado JSON con execution_id (UUID v4), sin datos personales. */
