@@ -322,20 +322,18 @@ class Home extends CI_Controller
         $this->registrar_solicitud($data);
         $cot = $this->cotizacion_desde_solicitud($sol);
 
+        $adjunto = $this->adjunto_pdf($this->render_cotizacion_pdf($cot), $cot['referencia'] . '.pdf');
         $correo_obj = (object) array(
             'email' => $data->correo,
             'subject' => 'Cotización ' . $cot['referencia'] . ' · Transportes Dorado',
             'body' => $this->load->view('mails/_cotizacion_formal', array('cot' => $cot, 'firmante' => $this->firmante()), true),
             'embedded' => array(array('path' => FCPATH . 'assets/img/firma_cotizacion.png', 'cid' => 'firma')),
             'addbcc' => 'cotizaciones@transdorado.co',
-            'attachment' => array(array(
-                'content' => $this->render_cotizacion_pdf($cot),
-                'name' => $cot['referencia'] . '.pdf',
-                'type' => 'application/pdf',
-            )),
+            'attachment' => array($adjunto),
         );
         $this->load->library('Php_mailer', null, 'Php_mailer');
         $respuesta = $this->Php_mailer->enviarcorreo($correo_obj);
+        $this->borrar_adjunto($adjunto);
         $this->log_evento('cotizacion_publica_correo', array('id_destino' => $sol['ids']['destino'], 'enviado' => !empty($respuesta->success)));
 
         if (!empty($respuesta->success)) {
@@ -767,18 +765,16 @@ class Home extends CI_Controller
         }
 
         $this->load->library('Php_mailer');
+        $adjunto = $this->adjunto_pdf($this->render_cotizacion_pdf($cot), $cot['referencia'] . '.pdf');
         $correo = (object) array(
             'email' => $cot['cliente']['correo'],
             'subject' => 'Cotización ' . $cot['referencia'] . ' · Transportes Dorado',
             'body' => $this->load->view('mails/_cotizacion_formal', array('cot' => $cot, 'firmante' => $this->firmante()), true),
             'embedded' => array(array('path' => FCPATH . 'assets/img/firma_cotizacion.png', 'cid' => 'firma')),
-            'attachment' => array(array(
-                'content' => $this->render_cotizacion_pdf($cot),
-                'name' => $cot['referencia'] . '.pdf',
-                'type' => 'application/pdf',
-            )),
+            'attachment' => array($adjunto),
         );
         $respuesta = $this->php_mailer->enviarcorreo($correo);
+        $this->borrar_adjunto($adjunto);
         $ok = !empty($respuesta->success);
         $this->log_evento('cotizacion_formal_correo', array('referencia' => $cot['referencia'], 'enviado' => $ok));
 
@@ -935,6 +931,31 @@ class Home extends CI_Controller
         ), true);
         $this->load->library('dompdf_gen');
         return $this->dompdf_gen->generate($html, $cot['referencia'] . '.pdf', false, 'letter', 'portrait');
+    }
+
+    /**
+     * Adjunto PDF para la librería de correo. Se entrega en memoria ('content')
+     * y también como archivo temporal ('path') en application/cache, que no es
+     * pública: así funciona tanto con la librería actual como con versiones
+     * anteriores que solo adjuntan archivos en disco. Borrar con borrar_adjunto().
+     */
+    private function adjunto_pdf($contenido, $nombre)
+    {
+        $adjunto = array('content' => $contenido, 'name' => $nombre, 'type' => 'application/pdf');
+        $ruta = APPPATH . 'cache/adj_' . bin2hex(random_bytes(8)) . '.pdf';
+        if (@file_put_contents($ruta, $contenido) !== false) {
+            $adjunto['path'] = $ruta;
+        } else {
+            log_message('error', 'adjunto_pdf: no se pudo escribir el temporal en application/cache');
+        }
+        return $adjunto;
+    }
+
+    private function borrar_adjunto($adjunto)
+    {
+        if (!empty($adjunto['path']) && strpos($adjunto['path'], APPPATH . 'cache/adj_') === 0 && is_file($adjunto['path'])) {
+            @unlink($adjunto['path']);
+        }
     }
 
     /** "2026-12-04" -> "4 de diciembre de 2026" */

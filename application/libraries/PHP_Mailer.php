@@ -110,6 +110,12 @@ class Php_mailer {
 						}
 					}
 				}
+				// Si se pidió un adjunto y no quedó agregado, no se envía un correo incompleto
+				if (!empty($correo->attachment) && !$mail->attachmentExists()) {
+					$return->error = 'Adjunto no agregado: el PDF llegó vacío o el archivo temporal no existe';
+					log_message('error', 'Php_mailer: ' . $return->error);
+					return $return;
+				}
 				$mail->Body = empty($correo->body) ? 'Cotización' : $correo->body;
 				if ($mail->send()) {
 					$return->success = 1;
